@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACE.Plugin.Crypto", "ACE.Plugin.Crypto\ACE.Plugin.Crypto.csproj", "{11BDB4EE-6AA0-4AAC-8AFA-82C6F74A80FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11BDB4EE-6AA0-4AAC-8AFA-82C6F74A80FA}.Debug|x64.ActiveCfg = Debug|x64
+		{11BDB4EE-6AA0-4AAC-8AFA-82C6F74A80FA}.Debug|x64.Build.0 = Debug|x64
+		{11BDB4EE-6AA0-4AAC-8AFA-82C6F74A80FA}.Release|x64.ActiveCfg = Release|x64
+		{11BDB4EE-6AA0-4AAC-8AFA-82C6F74A80FA}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9BF0926-1221-42C1-8E73-758866241639}
+	EndGlobalSection
+EndGlobal

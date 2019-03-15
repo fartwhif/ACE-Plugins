@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+Dependencies/*
+!Dependencies/README.md
+!Dependencies/ACE/PUT ACE BINARIES HERE.txt
+
 # User-specific files
 *.suo
 *.user
