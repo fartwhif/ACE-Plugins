@@ -1,17 +1,18 @@
 ﻿using ACE.Common;
 using ACE.Plugin.Crypto.Common;
+using ACE.Plugin.Crypto.Managers;
 using System.Threading.Tasks;
 
-namespace ACE.Plugin.Crypto.Managers
+namespace ACE.Plugin.Crypto
 {
     public class CryptoInitializer : IACEPlugin
     {
-        public void Start(TaskCompletionSource<bool> tsc)
+        public void Start(TaskCompletionSource<bool> ResultOfInitSink)
         {
             PluginConstants.MyInstance = this;
             CryptoConfigManager.Initialize();
             CertificateManager.Initialize();
-            tsc.SetResult(true); // report success
+            ResultOfInitSink.SetResult(true); // report success
         }
     }
 }
