@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PreserveCompilationContext>false</PreserveCompilationContext>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
@@ -27,7 +28,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="set src=$(TargetDir)&#xD;&#xA;copy &quot;$(ProjectDir)crypto.js&quot; &quot;%src%crypto.js&quot;&#xD;&#xA;&#xD;&#xA;rem these are not needed as they are provided by ACE&#xD;&#xA;del /f /q &quot;%src%\ACE.Server.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Database.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.DatLoader.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Entity.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Common.*&quot;&#xD;&#xA;&#xD;&#xA;rem change the dst folder to your server plugins folder&#xD;&#xA;rem uncomment the following lines to copy needed files automatically&#xD;&#xA;rem set dst=E:\from desktop\ACE\ACE-plugin\Source\ACE.Server\bin\x64\Debug\netcoreapp2.1\Plugins\ACE.Plugin.Crypto&#xD;&#xA;rem robocopy &quot;%src% &quot; &quot;%dst% &quot; &quot;*.*&quot; /XO /NJH /NP&#xD;&#xA;rem SET ERRORLEVEL = 0" />
+    <Exec Command="set src=$(TargetDir)&#xD;&#xA;copy &quot;$(ProjectDir)crypto.js&quot; &quot;%src%crypto.js&quot;&#xD;&#xA;&#xD;&#xA;rem these are not needed as they are included with ACE&#xD;&#xA;del /f /q &quot;%src%\ACE.Server.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Database.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.DatLoader.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Entity.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Common.*&quot;&#xD;&#xA;del /f /q &quot;%src%\Microsoft.Extensions.DependencyModel.dll&quot;&#xD;&#xA;&#xD;&#xA;rem plugins this plugin uses are required to also be installed and enabled&#xD;&#xA;&#xD;&#xA;rem change the dst folder to the main ACE folder to copy needed files automatically&#xD;&#xA;set dst=E:\from desktop\ACE\ACE-plugin\Source\ACE.Server\bin\x64\Debug\netcoreapp2.1\&#xD;&#xA;set subdst=Plugins\ACE.Plugin.Crypto&#xD;&#xA;IF EXIST %dst% (&#xD;&#xA;robocopy &quot;%src% &quot; &quot;%dst%%subdst% &quot; &quot;*.*&quot; /XO /NJH /NP&#xD;&#xA;SET ERRORLEVEL = 0&#xD;&#xA;)&#xD;&#xA;" />
   </Target>
 
 </Project>

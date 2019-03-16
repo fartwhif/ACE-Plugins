@@ -1,5 +1,9 @@
 ﻿namespace ACE.Plugin.Crypto.Common
 {
+    public class CryptoConfigurationOuter
+    {
+        public CryptoConfiguration CryptoConfiguration { get; set; }
+    }
     public class CryptoConfiguration
     {
         /// <summary>

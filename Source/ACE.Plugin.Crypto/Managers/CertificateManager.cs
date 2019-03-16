@@ -1,5 +1,6 @@
 ﻿using ACE.Plugin.Crypto.Common;
 using ACE.Server.Managers;
+using ACE.Server.Plugin;
 using log4net;
 using System;
 using System.IO;
@@ -187,7 +188,7 @@ namespace ACE.Plugin.Crypto.Managers
 
         public static string EnsureCertificatePath(ILog log = null)
         {
-            string u = Path.Combine(PluginManager.DpACEBase, "certificates");
+            string u = Path.Combine(PluginManager.PathToACEFolder, "certificates");
             if (!Directory.Exists(u))
             {
                 try

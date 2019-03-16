@@ -1,6 +1,7 @@
 {
 	 "CryptoConfiguration": {
-		/*
+		
+        /*
 		 *  For hosting the web API.
 		 *  Specify the full path to a PKCS #12 file containing a private key with its X.509 certificate.
 		 *  Leave this null to automatically generate a new self-signed one for this server upon first server start with the web API enabled.
@@ -32,5 +33,6 @@
 		"PasswordStartupPromptKeyAndCertBundleDataSigner": false,
 		// If supplying an encrypted PKCS #12 file for DataSigner and not using password startup prompt mode.  Disables password startup prompt mode for DataSigner if supplied.  Default empty/no password, example: "mypassword"
 		"PasswordKeyAndCertBundleDataSigner": ""
+
 	}
 }
