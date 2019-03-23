@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,14 +29,13 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.1.2" />
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
-    <PackageReference Include="Nancy.Authentication.Stateless" Version="2.0.0-clinteastwood" />
-    <PackageReference Include="Nancy.Validation.FluentValidation" Version="2.0.0-clinteastwood" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Dependencies\NancyFx\src\Nancy.Authentication.Stateless\Nancy.Authentication.Stateless.csproj" />
+    <ProjectReference Include="..\..\Dependencies\NancyFx\src\Nancy\Nancy.csproj" />
     <ProjectReference Include="..\ACE.Plugin.Crypto\ACE.Plugin.Crypto.csproj" />
   </ItemGroup>
 
@@ -51,6 +51,9 @@
     </Reference>
     <Reference Include="ACE.Server">
       <HintPath>..\..\Dependencies\ACE\ACE.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>System</HintPath>
     </Reference>
   </ItemGroup>
 

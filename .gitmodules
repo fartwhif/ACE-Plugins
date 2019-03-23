@@ -1,0 +1,3 @@
+[submodule "Dependencies/NancyFx"]
+	path = Dependencies/NancyFx
+	url = https://github.com/NancyFx/Nancy.git

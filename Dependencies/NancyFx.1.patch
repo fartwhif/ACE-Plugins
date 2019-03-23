@@ -1,0 +1,15 @@
+ src/Nancy/DependencyContextAssemblyCatalog.cs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/Nancy/DependencyContextAssemblyCatalog.cs b/src/Nancy/DependencyContextAssemblyCatalog.cs
+index f62b4d67..b8203661 100644
+--- a/src/Nancy/DependencyContextAssemblyCatalog.cs
++++ b/src/Nancy/DependencyContextAssemblyCatalog.cs
+@@ -56,6 +56,7 @@ namespace Nancy
+                 }
+             }
+ 
++            AppDomain.CurrentDomain.GetAssemblies().Where(k => k.GetCustomAttributes(typeof(IncludeInNancyAssemblyScanningAttribute), false).Any()).ToList().ForEach(k => results.Add(k));
+             return results.ToArray();
+         }
+ 

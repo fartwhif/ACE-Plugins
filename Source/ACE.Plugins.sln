@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACE.Plugin.Crypto", "ACE.Plugin.Crypto\ACE.Plugin.Crypto.csproj", "{11BDB4EE-6AA0-4AAC-8AFA-82C6F74A80FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACE.Plugin.WebAPI", "ACE.Plugin.WebAPI\ACE.Plugin.WebAPI.csproj", "{0B809A34-4211-4B3D-954A-2CC1C1E6BE5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACE.Plugin.WebAPI", "ACE.Plugin.WebAPI\ACE.Plugin.WebAPI.csproj", "{0B809A34-4211-4B3D-954A-2CC1C1E6BE5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nancy", "..\Dependencies\NancyFx\src\Nancy\Nancy.csproj", "{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nancy.Authentication.Stateless", "..\Dependencies\NancyFx\src\Nancy.Authentication.Stateless\Nancy.Authentication.Stateless.csproj", "{E92F58A6-58D4-441C-A0D0-3CA3565382FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,22 @@ Global
 		{0B809A34-4211-4B3D-954A-2CC1C1E6BE5C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0B809A34-4211-4B3D-954A-2CC1C1E6BE5C}.Release|x64.ActiveCfg = Release|Any CPU
 		{0B809A34-4211-4B3D-954A-2CC1C1E6BE5C}.Release|x64.Build.0 = Release|Any CPU
+		{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}.Debug|x64.Build.0 = Debug|Any CPU
+		{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{14FDAD6D-AB9F-4273-9961-B9E8C8BD98ED}.Release|x64.Build.0 = Release|Any CPU
+		{E92F58A6-58D4-441C-A0D0-3CA3565382FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E92F58A6-58D4-441C-A0D0-3CA3565382FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E92F58A6-58D4-441C-A0D0-3CA3565382FF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E92F58A6-58D4-441C-A0D0-3CA3565382FF}.Debug|x64.Build.0 = Debug|Any CPU
+		{E92F58A6-58D4-441C-A0D0-3CA3565382FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E92F58A6-58D4-441C-A0D0-3CA3565382FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E92F58A6-58D4-441C-A0D0-3CA3565382FF}.Release|x64.ActiveCfg = Release|Any CPU
+		{E92F58A6-58D4-441C-A0D0-3CA3565382FF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
