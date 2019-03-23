@@ -1,0 +1,25 @@
+From fc85c1bcb5076c239e5b49484b3357b27212dfa3 Mon Sep 17 00:00:00 2001
+From: fartwhif <fartwhif@tuta.io>
+Date: Fri, 22 Mar 2019 21:22:01 -0400
+Subject: [PATCH] add plugin support
+
+---
+ src/Nancy/DependencyContextAssemblyCatalog.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/NancyFx/src/Nancy/DependencyContextAssemblyCatalog.cs b/NancyFx/src/Nancy/DependencyContextAssemblyCatalog.cs
+index f62b4d67..8e4d9a96 100644
+--- a/NancyFx/src/Nancy/DependencyContextAssemblyCatalog.cs
++++ b/NancyFx/src/Nancy/DependencyContextAssemblyCatalog.cs
+@@ -55,7 +55,7 @@ namespace Nancy
+                     }
+                 }
+             }
+-
++            AppDomain.CurrentDomain.GetAssemblies().Where(k => k.GetCustomAttributes(typeof(IncludeInNancyAssemblyScanningAttribute), false).Any()).ToList().ForEach(k => results.Add(k));
+             return results.ToArray();
+         }
+ 
+-- 
+2.20.1.windows.1
+

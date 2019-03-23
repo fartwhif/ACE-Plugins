@@ -1,4 +1,4 @@
-After pulling submodules apply the patches in this folder.
+After updating submodules apply the patches in this folder by running apply_patches.bat
 
 there are 2 types of required libraries
 1. ACE binaries
