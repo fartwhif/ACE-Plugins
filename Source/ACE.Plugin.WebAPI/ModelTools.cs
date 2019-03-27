@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace ACE.Plugin.WebAPI
 {
-    internal static class ModelTools
+    public static class ModelTools
     {
         public static string ToJson(object obj)
         {

@@ -10,8 +10,6 @@ namespace ACE.Plugin.WebAPI
     {
         public NancyBootstrapper() { }
 
-        // Override with a valid password (albeit a really really bad one!)
-        // to enable the diagnostics dashboard
         public override void Configure(INancyEnvironment environment)
         {
             environment.Tracing(
@@ -34,8 +32,6 @@ namespace ACE.Plugin.WebAPI
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            //Conventions.ViewLocationConventions.Add((viewName, model, viewLocationContext) => string.Concat("Web/Views/", viewName));
-            //WebAPIGlobal.ResultOfInitSink.SetResult(true);
             WebAPIGlobal.ResultOfHostRunSink.SetResult(true);
         }
 
@@ -43,6 +39,5 @@ namespace ACE.Plugin.WebAPI
         {
             base.ConfigureRequestContainer(container, context);
         }
-
     }
 }

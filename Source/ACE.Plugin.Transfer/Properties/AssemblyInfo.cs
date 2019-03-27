@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ACE.Plugin.WebAPI")]
+[assembly: AssemblyTitle("ACE.Plugin.Transfer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ACE.Plugin.WebAPI")]
-[assembly: AssemblyProduct("ACE.Plugin.WebAPI")]
+[assembly: AssemblyCompany("ACE.Plugin.Transfer")]
+[assembly: AssemblyProduct("ACE.Plugin.Transfer")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f77502b0-8537-4e3f-8a9f-6a15042440f0")]
+[assembly: Guid("a079caef-626e-4994-b830-a59e6182a959")]
 
 // Version information for an assembly consists of the following four values:
 //
