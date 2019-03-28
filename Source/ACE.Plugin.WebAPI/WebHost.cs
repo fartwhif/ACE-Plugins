@@ -51,7 +51,7 @@ namespace ACE.Plugin.WebAPI
                     }
                 }
             }));
-            hostThread.SetApartmentState(ApartmentState.STA);
+            //hostThread.SetApartmentState(ApartmentState.STA); // linux: System.PlatformNotSupportedException: COM interop is not supported on this platform.
             hostThread.Priority = ThreadPriority.BelowNormal;
             hostThread.Start();
         }

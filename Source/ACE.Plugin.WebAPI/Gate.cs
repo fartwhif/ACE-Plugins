@@ -27,11 +27,11 @@ namespace ACE.Plugin.WebAPI
             GateQueue = new ConcurrentQueue<GatedAction>();
             GateQueue2 = new ConcurrentQueue<GatedAction>();
             GateThread = new Thread(new ThreadStart(GateThreadLoop));
-            GateThread.SetApartmentState(ApartmentState.STA);
+            //GateThread.SetApartmentState(ApartmentState.STA); // linux: System.PlatformNotSupportedException: COM interop is not supported on this platform.
             GateThread.Name = "WebApiGate1";
             GateThread.Start();
             GateThread2 = new Thread(new ThreadStart(GateThreadLoop2));
-            GateThread2.SetApartmentState(ApartmentState.STA);
+            //GateThread2.SetApartmentState(ApartmentState.STA); // linux: System.PlatformNotSupportedException: COM interop is not supported on this platform.
             GateThread2.Name = "WebApiGate2";
             GateThread2.Start();
         }

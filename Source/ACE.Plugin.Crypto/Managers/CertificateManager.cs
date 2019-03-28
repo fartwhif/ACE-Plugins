@@ -236,7 +236,7 @@ namespace ACE.Plugin.Crypto.Managers
                        new OidCollection { new Oid("1.3.6.1.5.5.7.3.1") }, false));
                 request.CertificateExtensions.Add(sanBuilder.Build());
                 X509Certificate2 certificate = request.CreateSelfSigned(new DateTimeOffset(DateTime.UtcNow.AddDays(-1)), new DateTimeOffset(DateTime.UtcNow.AddDays(daysUntilExpire)));
-                certificate.FriendlyName = CommonName;
+                //certificate.FriendlyName = CommonName; // Linux: System.PlatformNotSupportedException: The FriendlyName value cannot be set on Unix.
                 return new X509Certificate2(certificate.Export(X509ContentType.Pfx, "WeNeedASaf3rPassword"), "WeNeedASaf3rPassword", X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
             }
         }
