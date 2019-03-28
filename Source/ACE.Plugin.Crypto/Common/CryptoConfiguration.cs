@@ -11,8 +11,8 @@
         /// Specify the full path to a PKCS #12 file containing a private key with its X.509 certificate.<para/>
         /// Leave this null to automatically generate a new self-signed one for this server upon first server start with the web API enabled.<para/>
         /// Automatic creation will save and use the file at:<para/>
-        /// Linux: /home/&lt;user&gt;/.config/acemulator_&lt;worldname&gt;/certificates/webapi.pfx<para/>
-        /// Windows: C:\Users\&lt;user&gt;\AppData\Roaming\acemulator_&lt;worldname&gt;\certificates\webapi.pfx
+        /// Linux:  &lt;ACE&gt;/certificates/webapi.pfx<para/>
+        /// Windows:  &lt;ACE&gt;\certificates\webapi.pfx
         /// </summary>
         public string FilePathKeyAndCertBundleWebApi { get; set; }
 
@@ -32,8 +32,8 @@
         /// Specify the full path to a PKCS #12 file containing a private key with its X.509 certificate.<para/>
         /// Leave this null to automatically generate a new self-signed one for this server upon first server start with one or more character transfer features enabled.<para/>
         /// Automatic creation will save and use the file at:<para/>
-        /// Linux: /home/&lt;user&gt;/.config/acemulator_&lt;worldname&gt;/certificates/datasigner.pfx<para/>
-        /// Windows: C:\Users\&lt;user&gt;\AppData\Roaming\acemulator_&lt;worldname&gt;\certificates\datasigner.pfx<para/>
+        /// Linux: &lt;ACE&gt;/certificates/datasigner.pfx<para/>
+        /// Windows: &lt;ACE&gt;\certificates\datasigner.pfx<para/>
         /// After creation keep the file private and it's a good idea to backup the file to a private location.<para/>
         /// If an adversary obtains it they could use it maliciously against servers that trust its certificate/server thumbprint!<para/>
         /// If this file is lost all servers that trust its certificate/server thumbprint will need to be reconfigured and all local pending migrations cancelled.<para/>
