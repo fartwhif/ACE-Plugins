@@ -20,8 +20,8 @@
 		 *  Specify the full path to a PKCS #12 file containing a private key with its X.509 certificate.
 		 *  Leave this null to automatically generate a new self-signed one for this server upon first server start with one or more character transfer features enabled.
 		 *  Automatic creation will save and use the file at:
-		 *  Linux: /home/<user>/.config/acemulator_<worldname>/certificates/datasigner.pfx
-		 *  Windows: C:\Users\<user>\AppData\Roaming\acemulator_<worldname>\certificates\datasigner.pfx
+		 *  Linux: <ACE>/certificates/datasigner.pfx
+		 *  Windows: <ACE>\certificates\datasigner.pfx
 		 *  After creation keep the file private and it's a good idea to backup the file to a private location.
 		 *  If an adversary obtains it they could use it maliciously against servers that trust its certificate/server thumbprint!
 		 *  If this file is lost all servers that trust its certificate/server thumbprint will need to be reconfigured and all local pending migrations cancelled.
