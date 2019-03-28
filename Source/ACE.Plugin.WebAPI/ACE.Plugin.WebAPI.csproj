@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="8.1.2" />
+    <PackageReference Include="FluentValidation" Version="8.2.0" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.4" />
@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Dependencies\NancyFx\src\Nancy.Authentication.Stateless\Nancy.Authentication.Stateless.csproj" />
+    <ProjectReference Include="..\..\Dependencies\NancyFx\src\Nancy.Validation.FluentValidation\Nancy.Validation.FluentValidation.csproj" />
     <ProjectReference Include="..\..\Dependencies\NancyFx\src\Nancy\Nancy.csproj" />
     <ProjectReference Include="..\ACE.Plugin.Crypto\ACE.Plugin.Crypto.csproj" />
   </ItemGroup>

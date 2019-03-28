@@ -8,7 +8,7 @@ Subject: [PATCH] add plugin support
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/NancyFx/src/Nancy/DependencyContextAssemblyCatalog.cs b/NancyFx/src/Nancy/DependencyContextAssemblyCatalog.cs
-index f62b4d67..8e4d9a96 100644
+index f62b4d67..c87a77b2 100644
 --- a/NancyFx/src/Nancy/DependencyContextAssemblyCatalog.cs
 +++ b/NancyFx/src/Nancy/DependencyContextAssemblyCatalog.cs
 @@ -55,7 +55,7 @@ namespace Nancy
@@ -16,10 +16,11 @@ index f62b4d67..8e4d9a96 100644
                  }
              }
 -
-+            AppDomain.CurrentDomain.GetAssemblies().Where(k => k.GetCustomAttributes(typeof(IncludeInNancyAssemblyScanningAttribute), false).Any()).ToList().ForEach(k => results.Add(k));
++            AppDomain.CurrentDomain.GetAssemblies().Where(k => k.GetCustomAttributes(typeof(IncludeInNancyAssemblyScanningAttribute), false).Any() || k.GetName().Name == "Nancy.Validation.FluentValidation").ToList().ForEach(k => results.Add(k));
              return results.ToArray();
          }
  
+
 -- 
 2.20.1.windows.1
 

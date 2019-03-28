@@ -10,6 +10,7 @@ using Nancy.Bootstrapper;
 using Nancy.Configuration;
 using Nancy.ModelBinding;
 using Nancy.TinyIoc;
+using Nancy.Validation.FluentValidation;
 using System;
 using System.Net;
 using System.Security.Claims;
@@ -46,6 +47,10 @@ namespace ACE.Plugin.WebAPI.Managers
             type = typeof(NancyModule);
             type = typeof(AbstractValidator<AdminCommandRequestModel>);
             type = typeof(ModuleExtensions);
+
+            // loads Nancy.Validation.FluentValidation assembly into the current app domain so that the patched DependencyContextAssemblyCatalog will catalog it upon startup
+            var z = new DefaultFluentAdapterFactory(null);
+
             Gate gate = Gate.Instance; // spin up gate threads
             SetPerch();
         }
