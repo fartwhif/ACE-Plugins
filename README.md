@@ -1,2 +1,2 @@
 # ACE-Plugins
-A collection of "official" ACEmulator plugins.
+A collection of unofficial ACEmulator plugins.
