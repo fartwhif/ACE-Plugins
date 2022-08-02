@@ -106,8 +106,12 @@ namespace ACE.Plugin.Web.Managers
                     });
                 });
             }
-
+          
             builder.UseStartup<Startup>();
+
+
+            //builder.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+
             var host = builder.Build();
 
             log.Info($"Binding web services to {Perch.Address}:{Perch.Port}");

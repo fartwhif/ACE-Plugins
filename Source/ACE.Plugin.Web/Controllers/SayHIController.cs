@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACE.Plugin.Web.Controllers;
 
+[Authorize]
 public class SayHiController : ControllerBase
 {
     [Route("sayhi/{name}")]
