@@ -1,0 +1,196 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="11.1.0" />
+		<PackageReference Include="log4net" Version="2.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Owin" Version="6.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ACE.Plugin.Crypto\ACE.Plugin.Crypto.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="ACE.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+			<HintPath>..\..\Dependencies\ACE\ACE.Common.dll</HintPath>
+		</Reference>
+		<Reference Include="ACE.Database, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+			<HintPath>..\..\Dependencies\ACE\ACE.Database.dll</HintPath>
+		</Reference>
+		<Reference Include="ACE.Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+			<HintPath>..\..\Dependencies\ACE\ACE.Entity.dll</HintPath>
+		</Reference>
+		<Reference Include="ACE.Server, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null">
+			<HintPath>..\..\Dependencies\ACE\ACE.Server.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="wwwroot\css\bootstrap-grid.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-grid.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-grid.min.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-grid.min.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-grid.rtl.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-grid.rtl.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-grid.rtl.min.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-grid.rtl.min.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-reboot.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-reboot.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-reboot.min.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-reboot.min.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-reboot.rtl.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-reboot.rtl.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-reboot.rtl.min.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-reboot.rtl.min.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-utilities.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-utilities.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-utilities.min.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-utilities.min.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-utilities.rtl.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-utilities.rtl.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-utilities.rtl.min.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap-utilities.rtl.min.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap.min.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap.min.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap.rtl.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap.rtl.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap.rtl.min.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\bootstrap.rtl.min.css.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\css\signin.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\Default.htm">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\favicon.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\images\ac.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.bundle.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.bundle.js.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.bundle.min.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.bundle.min.js.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.esm.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.esm.js.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.esm.min.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.esm.min.js.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.js.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.min.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\bootstrap.min.js.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\jquery-3.6.0.min.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="wwwroot\js\jquery-3.6.0.min.map">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="set src=$(TargetDir)&#xA;copy &quot;$(ProjectDir)web.js&quot; &quot;%25src%25web.js&quot;&#xA;&#xA;rem these are not needed as they are included with ACE&#xA;del /f /q &quot;%25src%25\ACE.Server.*&quot;&#xA;del /f /q &quot;%25src%25\ACE.Database.*&quot;&#xA;del /f /q &quot;%25src%25\ACE.DatLoader.*&quot;&#xA;del /f /q &quot;%25src%25\ACE.Entity.*&quot;&#xA;del /f /q &quot;%25src%25\ACE.Common.*&quot;&#xA;del /f /q &quot;%25src%25\Microsoft.Extensions.DependencyModel.dll&quot;&#xA;&#xA;rem plugins this plugin uses are required to also be installed and enabled&#xA;del /f /q &quot;%25src%25\ACE.Plugin.Crypto.*&quot;&#xA;&#xA;rem change the dst folder to the main ACE folder to copy needed files automatically&#xA;set dst=C:\projects\ace\ACE-Plugins\Dependencies\ACE\&#xA;set subdst=Plugins\ACE.Plugin.Web&#xA;IF EXIST %25dst%25 (&#xA;robocopy &quot;%25src%25 &quot; &quot;%25dst%25%25subdst%25 &quot; &quot;*.*&quot; /XO /NJH /NP /S&#xA;SET ERRORLEVEL = 0&#xA;)&#xA;" />
+	</Target>
+
+</Project>

@@ -2,16 +2,17 @@
 
   <PropertyGroup>
     <PreserveCompilationContext>false</PreserveCompilationContext>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DouglasCrockford.JsMin" Version="1.1.3" />
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="DouglasCrockford.JsMin" Version="2.1.0" />
+    <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Security.Permissions" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +31,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="set src=$(TargetDir)&#xD;&#xA;copy &quot;$(ProjectDir)crypto.js&quot; &quot;%src%crypto.js&quot;&#xD;&#xA;&#xD;&#xA;rem these are not needed as they are included with ACE&#xD;&#xA;del /f /q &quot;%src%\ACE.Server.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Database.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.DatLoader.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Entity.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Common.*&quot;&#xD;&#xA;del /f /q &quot;%src%\Microsoft.Extensions.DependencyModel.dll&quot;&#xD;&#xA;&#xD;&#xA;rem plugins this plugin uses are required to also be installed and enabled&#xD;&#xA;&#xD;&#xA;rem change the dst folder to the main ACE folder to copy needed files automatically&#xD;&#xA;set dst=E:\from desktop\ACE\ACE-plugin\Source\ACE.Server\bin\x64\Debug\netcoreapp2.1\&#xD;&#xA;set subdst=Plugins\ACE.Plugin.Crypto&#xD;&#xA;IF EXIST %dst% (&#xD;&#xA;robocopy &quot;%src% &quot; &quot;%dst%%subdst% &quot; &quot;*.*&quot; /XO /NJH /NP&#xD;&#xA;SET ERRORLEVEL = 0&#xD;&#xA;)&#xD;&#xA;" />
+    <Exec Command="set src=$(TargetDir)&#xA;copy &quot;$(ProjectDir)crypto.js&quot; &quot;%src%crypto.js&quot;&#xA;&#xA;rem these are not needed as they are included with ACE&#xA;del /f /q &quot;%src%\ACE.Server.*&quot;&#xA;del /f /q &quot;%src%\ACE.Database.*&quot;&#xA;del /f /q &quot;%src%\ACE.DatLoader.*&quot;&#xA;del /f /q &quot;%src%\ACE.Entity.*&quot;&#xA;del /f /q &quot;%src%\ACE.Common.*&quot;&#xA;del /f /q &quot;%src%\Microsoft.Extensions.DependencyModel.dll&quot;&#xA;&#xA;rem plugins this plugin uses are required to also be installed and enabled&#xA;&#xA;rem change the dst folder to the main ACE folder to copy needed files automatically&#xA;set dst=C:\projects\ace\ACE-Plugins\Dependencies\ACE\&#xA;set subdst=Plugins\ACE.Plugin.Crypto&#xA;IF EXIST %dst% (&#xA;robocopy &quot;%src% &quot; &quot;%dst%%subdst% &quot; &quot;*.*&quot; /XO /NJH /NP&#xA;SET ERRORLEVEL = 0&#xA;)&#xA;" />
   </Target>
 
 </Project>

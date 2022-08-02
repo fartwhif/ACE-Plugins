@@ -2,18 +2,18 @@
 	 "CryptoConfiguration": {
 		
         /*
-		 *  For hosting the web API.
+		 *  For hosting the web services.
 		 *  Specify the full path to a PKCS #12 file containing a private key with its X.509 certificate.
-		 *  Leave this null to automatically generate a new self-signed one for this server upon first server start with the web API enabled.
+		 *  Leave this null to automatically generate a new self-signed one for this server upon first server start with the web services enabled.
 		 *  Automatic creation will save and use the file at:
-		 *  Linux: <ACE>/certificates/webapi.pfx
-		 *  Windows: <ACE>\certificates\webapi.pfx
+		 *  Linux: <ACE>/certificates/web.pfx
+		 *  Windows: <ACE>\certificates\web.pfx
 		 */
-		"FilePathKeyAndCertBundleWebApi": null,
-		// If supplying an encrypted PKCS #12 file for WebApi and want to manually enter the password via the console during server startup.
-		"PasswordStartupPromptKeyAndCertBundleWebApi": false,
-		// If supplying an encrypted PKCS #12 file for WebApi and not using password startup prompt mode.  Disables password startup prompt mode for WebApi if supplied.  Default empty/no password, example: "mypassword"
-		"PasswordKeyAndCertBundleWebApi": "",
+		"FilePathKeyAndCertBundleWeb": null,
+		// If supplying an encrypted PKCS #12 file for Web and want to manually enter the password via the console during server startup.
+		"PasswordStartupPromptKeyAndCertBundleWeb": false,
+		// If supplying an encrypted PKCS #12 file for Web and not using password startup prompt mode.  Disables password startup prompt mode for Web if supplied.  Default empty/no password, example: "mypassword"
+		"PasswordKeyAndCertBundleWeb": "",
 		/*
 		 *  For signing character data.
 		 *  Applicable when using character transfer features.

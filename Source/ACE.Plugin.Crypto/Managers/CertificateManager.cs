@@ -17,7 +17,7 @@ namespace ACE.Plugin.Crypto.Managers
     /// <remarks>
     ///   Subordinates:
     ///     1. Transfer Manager
-    ///     2. Web Api
+    ///     2. Web
     ///   Known issue:
     ///     1. self-signed certificates for convenience when operator doesn't supply their own
     ///     2. Needs to be more dynamic and non dependent-plugin specific.
@@ -30,60 +30,60 @@ namespace ACE.Plugin.Crypto.Managers
         /// The thumbprint of the certified public key
         /// </summary>
         public static string Thumbprint => CertificateDataSigner?.Thumbprint;
-        public static X509Certificate2 CertificateWebApi { get; private set; } = null;
+        public static X509Certificate2 CertificateWeb { get; private set; } = null;
         private static X509Certificate2 CertificateDataSigner { get; set; } = null;
-        private const string AutoFileNameKeyAndCertBundleWebApi = "webapi.pfx";
+        private const string AutoFileNameKeyAndCertBundleWeb = "web.pfx";
         private const string AutoFileNameKeyAndCertBundleDataSigner = "datasigner.pfx";
-        private const string AutoCNWebApi = "ACEmulator webAPI plugin";
+        private const string AutoCNWeb = "ACEmulator web plugin";
         private const string AutoCNDataSigner = "ACEmulator Data Signer plugin";
 
-        public static void InitializeWebApiCert()
+        public static void InitializeWebCert()
         {
             try
             {
-                if (CryptoConfigManager.Config.FilePathKeyAndCertBundleWebApi == null)
+                if (CryptoConfigManager.Config.FilePathKeyAndCertBundleWeb == null)
                 {
-                    EnsureCert(AutoFileNameKeyAndCertBundleWebApi, AutoCNWebApi, 3650);
-                    CertificateWebApi = new X509Certificate2(Path.Combine(EnsureCertificatePath(log), AutoFileNameKeyAndCertBundleWebApi));
+                    EnsureCert(AutoFileNameKeyAndCertBundleWeb, AutoCNWeb, 3650);
+                    CertificateWeb = new X509Certificate2(Path.Combine(EnsureCertificatePath(log), AutoFileNameKeyAndCertBundleWeb));
                 }
                 else
                 {
-                    if (File.Exists(CryptoConfigManager.Config.FilePathKeyAndCertBundleWebApi))
+                    if (File.Exists(CryptoConfigManager.Config.FilePathKeyAndCertBundleWeb))
                     {
                         string password = null;
-                        if (!string.IsNullOrEmpty(CryptoConfigManager.Config.PasswordKeyAndCertBundleWebApi))
+                        if (!string.IsNullOrEmpty(CryptoConfigManager.Config.PasswordKeyAndCertBundleWeb))
                         {
-                            password = CryptoConfigManager.Config.PasswordKeyAndCertBundleWebApi;
+                            password = CryptoConfigManager.Config.PasswordKeyAndCertBundleWeb;
                         }
-                        else if (CryptoConfigManager.Config.PasswordStartupPromptKeyAndCertBundleWebApi)
+                        else if (CryptoConfigManager.Config.PasswordStartupPromptKeyAndCertBundleWeb)
                         {
-                            password = PasswordPrompt("supplied webAPI key and cert bundle file");
+                            password = PasswordPrompt("supplied web key and cert bundle file");
                         }
                         try
                         {
                             if (string.IsNullOrEmpty(password))
                             {
-                                CertificateWebApi = new X509Certificate2(CryptoConfigManager.Config.FilePathKeyAndCertBundleWebApi);
+                                CertificateWeb = new X509Certificate2(CryptoConfigManager.Config.FilePathKeyAndCertBundleWeb);
                             }
                             else
                             {
-                                CertificateWebApi = new X509Certificate2(CryptoConfigManager.Config.FilePathKeyAndCertBundleWebApi, password);
+                                CertificateWeb = new X509Certificate2(CryptoConfigManager.Config.FilePathKeyAndCertBundleWeb, password);
                             }
                         }
                         catch (Exception ex)
                         {
-                            log.Error($"Unable to use the supplied webAPI key and cert bundle file: {CryptoConfigManager.Config.FilePathKeyAndCertBundleWebApi}", ex);
+                            log.Error($"Unable to use the supplied web key and cert bundle file: {CryptoConfigManager.Config.FilePathKeyAndCertBundleWeb}", ex);
                         }
                     }
                     else
                     {
-                        log.Error($"File doesn't exist.  FilePathKeyAndCertBundleWebApi: {CryptoConfigManager.Config.FilePathKeyAndCertBundleWebApi}");
+                        log.Error($"File doesn't exist.  FilePathKeyAndCertBundleWeb: {CryptoConfigManager.Config.FilePathKeyAndCertBundleWeb}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                log.Fatal("Certificate manager failed to initialize webAPI cert.", ex);
+                log.Fatal("Certificate manager failed to initialize web cert.", ex);
                 throw;
             }
         }
@@ -124,7 +124,7 @@ namespace ACE.Plugin.Crypto.Managers
                         }
                         catch (Exception ex)
                         {
-                            log.Error($"Unable to use the supplied DataSigner key and cert bundle file: {CryptoConfigManager.Config.FilePathKeyAndCertBundleWebApi}", ex);
+                            log.Error($"Unable to use the supplied DataSigner key and cert bundle file: {CryptoConfigManager.Config.FilePathKeyAndCertBundleWeb}", ex);
                         }
                     }
                     else
@@ -142,7 +142,7 @@ namespace ACE.Plugin.Crypto.Managers
 
         public static void Initialize()
         {
-            InitializeWebApiCert();
+            InitializeWebCert();
             InitializeTransferCert();
         }
         private static string PasswordPrompt(string subject)

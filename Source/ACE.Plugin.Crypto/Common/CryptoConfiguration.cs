@@ -7,24 +7,24 @@
     public class CryptoConfiguration
     {
         /// <summary>
-        /// For hosting the web API.<para/>
+        /// For hosting the web services.<para/>
         /// Specify the full path to a PKCS #12 file containing a private key with its X.509 certificate.<para/>
-        /// Leave this null to automatically generate a new self-signed one for this server upon first server start with the web API enabled.<para/>
+        /// Leave this null to automatically generate a new self-signed one for this server upon first server start with web services enabled.<para/>
         /// Automatic creation will save and use the file at:<para/>
-        /// Linux:  &lt;ACE&gt;/certificates/webapi.pfx<para/>
-        /// Windows:  &lt;ACE&gt;\certificates\webapi.pfx
+        /// Linux:  &lt;ACE&gt;/certificates/web.pfx<para/>
+        /// Windows:  &lt;ACE&gt;\certificates\web.pfx
         /// </summary>
-        public string FilePathKeyAndCertBundleWebApi { get; set; }
+        public string FilePathKeyAndCertBundleWeb { get; set; }
 
         /// <summary>
-        /// If supplying an encrypted PKCS #12 file for WebApi and want to manually enter the password via the console during server startup.
+        /// If supplying an encrypted PKCS #12 file for web services and want to manually enter the password via the console during server startup.
         /// </summary>
-        public bool PasswordStartupPromptKeyAndCertBundleWebApi { get; set; }
+        public bool PasswordStartupPromptKeyAndCertBundleWeb { get; set; }
 
         /// <summary>
-        /// If supplying an encrypted PKCS #12 file for WebApi and not using password startup prompt mode.  Disables password startup prompt mode for WebApi if supplied.  Default empty/no password, example: "mypassword"
+        /// If supplying an encrypted PKCS #12 file for web services and not using password startup prompt mode.  Disables password startup prompt mode for web services if supplied.  Default empty/no password, example: "mypassword"
         /// </summary>
-        public string PasswordKeyAndCertBundleWebApi { get; set; }
+        public string PasswordKeyAndCertBundleWeb { get; set; }
 
         /// <summary>
         /// For signing character data.<para/>
