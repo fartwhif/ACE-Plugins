@@ -1,13 +1,9 @@
-using ACE.Database;
 using ACE.Plugin.Web.Logging;
-using ACE.Plugin.Web.Model.Character;
 using ACE.Plugin.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -101,6 +97,7 @@ public class Startup
             endpoints.MapControllers();
 
             Endpoints.GetCharacters(endpoints);
+            Endpoints.GetOnlineFriends(endpoints);
 
             //for example
             //endpoints.MapPut("customers/block/{customerId}", async ([FromRoute] string customerId, [FromBody] BlockCustomer blockCustomer, [FromServices] ICustomersRepository customersRepository) =>
