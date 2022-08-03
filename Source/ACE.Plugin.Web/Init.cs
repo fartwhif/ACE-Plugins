@@ -2,9 +2,7 @@ using ACE.Common;
 using ACE.Plugin.Web.Common;
 using ACE.Plugin.Web.Managers;
 using log4net;
-using System;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace ACE.Plugin.Web
 {
@@ -29,7 +27,7 @@ namespace ACE.Plugin.Web
 
         private static void OnProcessExit(object sender, EventArgs e)
         {
-            WebManager.Shutdown();
+            WebManager.StopWebServices();
         }
 
         public void AllPluginsStarted(TaskCompletionSource<bool> AllPluginsStartedSink)
@@ -38,7 +36,7 @@ namespace ACE.Plugin.Web
             // start the host now
             log.Info("Initializing WebManager...");
             WebGlobal.ResultOfHostRunSink = AllPluginsStartedSink;
-            WebManager.Run();
+            WebManager.StartWebServices();
         }
     }
 }

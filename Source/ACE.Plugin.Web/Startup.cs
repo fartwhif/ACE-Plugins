@@ -1,8 +1,13 @@
+using ACE.Database;
 using ACE.Plugin.Web.Logging;
+using ACE.Plugin.Web.Model.Character;
 using ACE.Plugin.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -42,9 +47,15 @@ public class Startup
             };
         });
 
-
-
         services.AddControllers();
+
+        services.AddAuthorization(options =>
+        {
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+        });
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -88,37 +99,21 @@ public class Startup
         app.UseEndpoints((endpoints) =>
         {
             endpoints.MapControllers();
+
+            Endpoints.GetCharacters(endpoints);
+
+            //for example
+            //endpoints.MapPut("customers/block/{customerId}", async ([FromRoute] string customerId, [FromBody] BlockCustomer blockCustomer, [FromServices] ICustomersRepository customersRepository) =>
+            //{
+            //    var customer = await _customersRepository.Get(command.CustomerId);
+            //    customer.Block(command.Reason);
+            //    await _customersRepository.Save(customer);
+            //    return Results.Ok();
+            //});
+
+
+
         });
-
-
-
-        //var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("%%eCret6545623retkey123"));
-
-
-        //var tokenValidationParameters = new TokenValidationParameters
-        //{
-        //    // The signing key must match!
-        //    ValidateIssuerSigningKey = true,
-        //    IssuerSigningKey = signingKey,
-        //    // Validate the JWT Issuer (iss) claim
-        //    ValidateIssuer = true,
-        //    ValidIssuer = "DemoIssuer",
-        //    // Validate the JWT Audience (aud) claim
-        //    ValidateAudience = true,
-        //    ValidAudience = "DemoAudience",
-        //    // Validate the token expiry
-        //    ValidateLifetime = true,
-        //    // If you want to allow a certain amount of clock drift, set that here:
-        //    ClockSkew = TimeSpan.Zero
-        //};
-
-
-        //app.UseAuthentication().UseJwtBearerAuthentication(new JwtBearerOptions
-        //{
-        //    AutomaticAuthenticate = true,
-        //    AutomaticChallenge = true,
-        //    TokenValidationParameters = tokenValidationParameters
-        //});
 
     }
 }

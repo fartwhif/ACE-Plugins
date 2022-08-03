@@ -9,7 +9,8 @@ using System.Text;
 
 namespace ACE.Plugin.Web.Services;
 
-public interface IAccountService {
+public interface IAccountService
+{
     Task<Token> GetAuthTokens(Login login);
 }
 
@@ -26,13 +27,13 @@ public class AccountService : IAccountService
         );
 
         List<Claim> userCliams = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, acct.AccountName),
-        new Claim("AccountId", acct.AccountId.ToString()),
-        new Claim("AccessLevelId", acct.AccessLevel.ToString()),
-        new Claim("AccessLevelName", ((AccessLevel)acct.AccessLevel).ToString()),
-        new Claim(((AccessLevel)acct.AccessLevel).ToString(), "1")
-    };
+        {
+            new Claim(ClaimTypes.Name, acct.AccountName),
+            new Claim("AccountId", acct.AccountId.ToString()),
+            new Claim("AccessLevelId", acct.AccessLevel.ToString()),
+            new Claim("AccessLevelName", ((AccessLevel)acct.AccessLevel).ToString()),
+            new Claim(((AccessLevel)acct.AccessLevel).ToString(), "1")
+        };
 
         var jwtToken = new JwtSecurityToken(
             issuer: "plugin!",

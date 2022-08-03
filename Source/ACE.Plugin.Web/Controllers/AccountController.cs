@@ -1,5 +1,6 @@
 ﻿using ACE.Plugin.Web.Model;
 using ACE.Plugin.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACE.Plugin.Web.Controllers;
@@ -16,6 +17,7 @@ public class AccountController : ControllerBase
 
     [Route("login-token")]
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> GetLoginToken(Login login)
     {
         var result = await _accountService.GetAuthTokens(login);

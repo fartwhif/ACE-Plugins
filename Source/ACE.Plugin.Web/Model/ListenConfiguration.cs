@@ -2,7 +2,7 @@
 
 namespace ACE.Plugin.Web.Model
 {
-    internal class Perch
+    internal class ListenConfiguration
     {
         public IPAddress Address { get; set; }
         public ushort Port { get; set; }

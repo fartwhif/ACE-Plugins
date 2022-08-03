@@ -24,45 +24,32 @@ namespace ACE.Plugin.Web.Managers
     public static class WebManager
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static Thread? webHostStartThread;
+        private static IWebHost? webHost;
+        private static ListenConfiguration? ListenConfiguration { get; set; } = null;
+        private static readonly CancellationTokenSource webHostHalter = new();
 
-        private static CancellationTokenSource Halter = new CancellationTokenSource();
-
-        public static void PreInitialize()
+        private static void PreloadTypes()
         {
             // invoke dependency resolution while Web DLLs have precedence
-            Type type = null;
+            Type? type = null;
             type = typeof(WebHostBuilder);
-            //type = typeof(KestrelStartup);
             type = typeof(X509Certificate2);
             type = typeof(RSA);
             type = typeof(WebHostDefaults);
-            // type = typeof(StatelessAuthenticationConfiguration);
             type = typeof(ClaimsIdentity);
             type = typeof(IWebHost);
             type = typeof(IWebHostBuilder);
             type = typeof(WebHost);
             type = typeof(WebHostBuilder);
-            // type = typeof(TinyIoCContainer);
-            // type = typeof(NancyContext);
-            // type = typeof(IPipelines);
-            // type = typeof(INancyEnvironment);
-            // type = typeof(Response);
-            // type = typeof(NancyModule);
             type = typeof(AbstractValidator<AdminCommandRequestModel>);
             type = typeof(ControllerBase);
             type = typeof(IConfigurationBuilder);
-            // type = typeof(ModuleExtensions);
 
             // loads Nancy.Validation.FluentValidation assembly into the current app domain so that the patched DependencyContextAssemblyCatalog will catalog it upon startup
             // var z = new DefaultFluentAdapterFactory(null);
-
-            Gate gate = Gate.Instance; // spin up gate threads
-            SetPerch();
         }
-
-        private static Perch Perch { get; set; } = null;
-
-        public static void SetPerch()
+        public static void SetWebServicesListenConfiguration()
         {
             string listeningHost = WebConfigManager.Config.Host;
             ushort listeningPort = WebConfigManager.Config.Port;
@@ -72,77 +59,91 @@ namespace ACE.Plugin.Web.Managers
                 log.Error(msg);
                 throw new Exception(msg);
             }
-
-            Perch = new Perch() { Address = listenAt, Port = listeningPort };
+            ListenConfiguration = new ListenConfiguration() { Address = listenAt, Port = listeningPort };
         }
-
+        public static void PreInitialize()
+        {
+            PreloadTypes();
+            Gate gate = Gate.Instance;
+            SetWebServicesListenConfiguration();
+        }
         /// <summary>
         /// start the web host
         /// </summary>
-        public static async Task RunAsync()
+        public static void StartWebServices()
         {
-            if (Perch == null)
+            if (webHostStartThread != null)
             {
                 return;
             }
-            var certs = Path.Combine(PluginManager.PathToACEFolder, "certificates");
-
-
-            var builder = new WebHostBuilder();
-
-            builder.UseKestrel();
-            builder.UseUrls($"http://{Perch.Address}:{Perch.Port}");
-            if (CertificateManager.CertificateWeb != null)
+            if (ListenConfiguration == null)
             {
-                builder.ConfigureKestrel(serverOptions =>
-                {
-                    serverOptions.ConfigureEndpointDefaults(listenOptions =>
-                    {
-                        listenOptions
-                            .UseHttps(new HttpsConnectionAdapterOptions()
-                            {
-                                ServerCertificate = new X509Certificate2(CertificateManager.CertificateWeb)
-                            });
-                    });
-                });
+                log.Fatal("Invalid web host addr:port listen configuration.");
+                WebGlobal.ResultOfHostRunSink.SetResult(false);
+                return;
             }
-          
-            builder.UseStartup<Startup>();
-
-
-            //builder.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
-
-            var host = builder.Build();
-
-            log.Info($"Binding web services to {Perch.Address}:{Perch.Port}");
-            await host.RunAsync(Halter.Token);
-        }
-
-        public static void Run()
-        {
-            WebGlobal.ResultOfHostRunSink.SetResult(true); // todo: tie this into the host startup pipeline
-            Thread th = new Thread(new ThreadStart(async () =>
+            try
+            {
+                if (ListenConfiguration == null)
+                {
+                    return;
+                }
+                var certs = Path.Combine(PluginManager.PathToACEFolder, "certificates");
+                var builder = new WebHostBuilder();
+                builder.UseKestrel();
+                builder.UseUrls($"http://{ListenConfiguration.Address}:{ListenConfiguration.Port}");
+                if (CertificateManager.CertificateWeb != null)
+                {
+                    builder.ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.ConfigureEndpointDefaults(listenOptions =>
+                        {
+                            listenOptions
+                                .UseHttps(new HttpsConnectionAdapterOptions()
+                                {
+                                    ServerCertificate = new X509Certificate2(CertificateManager.CertificateWeb)
+                                });
+                        });
+                    });
+                }
+                builder.UseStartup<Startup>();
+                webHost = builder.Build();
+                WebGlobal.ResultOfHostRunSink.SetResult(true);
+            }
+            catch (Exception ex)
+            {
+                log.Fatal("WebHost build failure.", ex);
+                if (WebGlobal.ResultOfHostRunSink.Task.Status == TaskStatus.WaitingForActivation)
+                {
+                    WebGlobal.ResultOfHostRunSink.SetResult(false);
+                }
+            }
+            webHostStartThread = new Thread(new ThreadStart(async () =>
             {
                 try
                 {
-                    await RunAsync();
+                    log.Info($"Binding web services to {ListenConfiguration.Address}:{ListenConfiguration.Port}");
+                    await webHost.RunAsync(webHostHalter.Token);
                 }
                 catch (Exception ex)
                 {
-                    log.FatalFormat("WebHost has thrown: {0}", ex.Message, ex);
+                    log.Fatal("WebHost failure.", ex);
+                    if (WebGlobal.ResultOfHostRunSink.Task.Status == TaskStatus.WaitingForActivation)
+                    {
+                        WebGlobal.ResultOfHostRunSink.SetResult(false);
+                    }
                 }
             }));
-            th.Name = "WebHost";
-            th.Start();
+            webHostStartThread.Priority = ThreadPriority.BelowNormal;
+            webHostStartThread.Start();
         }
-
         /// <summary>
-        /// stop the web host, grace lasts for 1 second, then remaining requests are jettisoned.
+        /// stop the web host
         /// </summary>
-        public static void Shutdown()
+        public static void StopWebServices()
         {
             Gate.Shutdown();
-            Halter.Cancel(); // terminate web host
+            webHostHalter.Cancel();
         }
     }
 }
