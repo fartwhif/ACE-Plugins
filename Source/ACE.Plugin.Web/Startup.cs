@@ -1,5 +1,7 @@
 using ACE.Plugin.Web.Logging;
+using ACE.Plugin.Web.Model.Admin;
 using ACE.Plugin.Web.Services;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +19,12 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddFluentValidation(options =>
+        {
+            options.AutomaticValidationEnabled = true;
+            options.RegisterValidatorsFromAssemblyContaining<AdminCommandRequestModelValidator>();
+        });
+
         services.AddScoped<IAccountService, AccountService>();
 
         services
@@ -51,6 +59,7 @@ public class Startup
                 .RequireAuthenticatedUser()
                 .Build();
         });
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -94,14 +103,21 @@ public class Startup
         app.UseEndpoints((endpoints) =>
         {
             // anonymous
-            Endpoints.GetPlayerCounts(endpoints);
-            Endpoints.GetAccessToken(endpoints);
-            
+            WebEndpoints.GetPlayerCounts(endpoints);
+            WebEndpoints.GetAccessToken(endpoints);
+            WebEndpoints.GetNetworkStats(endpoints);
+            WebEndpoints.GetServerStatus(endpoints);
+            WebEndpoints.GetServerInfo(endpoints);
+
             // authenticated
-            Endpoints.GetCharacters(endpoints);
-            Endpoints.GetOnlineFriends(endpoints);
-            
-            
+            WebEndpoints.GetCharacters(endpoints);
+            WebEndpoints.GetOnlineFriends(endpoints);
+
+            // authenticated - admin
+            WebEndpoints.PostCommand(endpoints);
+            WebEndpoints.GetPlayerLocations(endpoints);
+            WebEndpoints.GetLandblockStatus(endpoints);
+
 
             //for example
             //endpoints.MapPut("customers/block/{customerId}", async ([FromRoute] string customerId, [FromBody] BlockCustomer blockCustomer, [FromServices] ICustomersRepository customersRepository) =>

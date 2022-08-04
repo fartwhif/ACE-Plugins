@@ -4,7 +4,7 @@ namespace ACE.Plugin.Web.Model.Admin
 {
     public class AdminCommandRequestModel
     {
-        public string Command { get; set; }
+        public string? Command { get; set; }
     }
     public class AdminCommandRequestModelValidator : AbstractValidator<AdminCommandRequestModel>
     {

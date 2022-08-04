@@ -21,6 +21,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.1.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.1.2" />
 		<PackageReference Include="log4net" Version="2.0.14" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
 		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
@@ -41,6 +42,9 @@
 		</Reference>
 		<Reference Include="ACE.Database, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
 			<HintPath>..\..\Dependencies\ACE\ACE.Database.dll</HintPath>
+		</Reference>
+		<Reference Include="ACE.DatLoader">
+		  <HintPath>..\..\Dependencies\ACE\ACE.DatLoader.dll</HintPath>
 		</Reference>
 		<Reference Include="ACE.Entity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
 			<HintPath>..\..\Dependencies\ACE\ACE.Entity.dll</HintPath>

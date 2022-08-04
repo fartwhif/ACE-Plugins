@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace ACE.Plugin.Web
 {
-    static partial class Endpoints
+    static partial class WebEndpoints
     {
         public static IEndpointRouteBuilder GetAccessToken(IEndpointRouteBuilder endpoints)
         {
