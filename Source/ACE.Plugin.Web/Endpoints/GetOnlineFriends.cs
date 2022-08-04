@@ -11,7 +11,7 @@ namespace ACE.Plugin.Web
     {
         public static IEndpointRouteBuilder GetOnlineFriends(IEndpointRouteBuilder endpoints)
         {
-            _ = endpoints.MapGet("GetOnlineFriends", (Func<HttpContext, Task<string>>)((context) =>
+            _ = endpoints.MapGet("GetOnlineFriends", (Func<HttpContext, Task<string>>)(async (context) =>
             {
                 var account = context.User.ToACEAccount();
                 string[]? onlineFriends = null;
@@ -36,9 +36,8 @@ namespace ACE.Plugin.Web
                         .Select(k => k.Name)
                         .ToArray();
                 });
-                context.Response.ContentType = "application/json";
-                return Task.FromResult(onlineFriends.ToJSON());
-            }));
+                return context.Ok(onlineFriends);
+            })).RequireAuthorization();
             return endpoints;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using ACE.Database.Models.Auth;
 using ACE.Entity.Enum;
 using ACE.Plugin.Web.Model;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +13,26 @@ namespace ACE.Plugin.Web
 {
     internal static class Extensions
     {
+        public static string Ok(this HttpContext context, object obj)
+        {
+            context.Response.StatusCode = StatusCodes.Status200OK;
+            return context.JSONResult(obj);
+        }
+        public static string BadRequest(this HttpContext context, object obj)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            return context.JSONResult(obj);
+        }
+        public static string Unauthorized(this HttpContext context, object obj)
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return context.JSONResult(obj);
+        }
+        public static string JSONResult(this HttpContext context, object obj)
+        {
+            context.Response.ContentType = "application/json";
+            return obj.ToJSON();
+        }
         public static string ToJSON(this object obj)
         {
             return Util.ToJson(obj);

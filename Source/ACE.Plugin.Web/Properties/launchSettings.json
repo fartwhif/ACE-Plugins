@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ACE.Plugin.Web": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\projects\\ace\\ACE-Plugins\\Dependencies\\ACE\\ACE.Server.exe",
+      "workingDirectory": "C:\\projects\\ace\\ACE-Plugins\\Dependencies\\ACE"
+    }
+  }
+}

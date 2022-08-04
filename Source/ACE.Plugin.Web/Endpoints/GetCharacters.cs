@@ -29,9 +29,10 @@ namespace ACE.Plugin.Web
                     });
                 });
                 await tsc.Task;
-                context.Response.ContentType = "application/json";
-                return model.ToJSON();
-            }));
+                
+                return context.Ok(model);
+
+            })).RequireAuthorization();
 
             return endpoints;
         }

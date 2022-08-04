@@ -47,11 +47,10 @@ public class Startup
 
         services.AddAuthorization(options =>
         {
-            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            options.DefaultPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
         });
-
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -94,10 +93,15 @@ public class Startup
 
         app.UseEndpoints((endpoints) =>
         {
-            endpoints.MapControllers();
-
+            // anonymous
+            Endpoints.GetPlayerCounts(endpoints);
+            Endpoints.GetAccessToken(endpoints);
+            
+            // authenticated
             Endpoints.GetCharacters(endpoints);
             Endpoints.GetOnlineFriends(endpoints);
+            
+            
 
             //for example
             //endpoints.MapPut("customers/block/{customerId}", async ([FromRoute] string customerId, [FromBody] BlockCustomer blockCustomer, [FromServices] ICustomersRepository customersRepository) =>
