@@ -137,7 +137,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesBook = new BiotaPropertiesBook
                 {
-                    Id = 0,
                     ObjectId = guid
                 };
                 result.BiotaPropertiesBook.MaxNumPages = biota.BiotaPropertiesBook.MaxNumPages;
@@ -160,7 +159,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesAttribute.Add(new BiotaPropertiesAttribute
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     InitLevel = value.InitLevel,
@@ -173,7 +171,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesAttribute2nd.Add(new BiotaPropertiesAttribute2nd
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     InitLevel = value.InitLevel,
@@ -237,7 +234,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesBool.Add(new BiotaPropertiesBool
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     Value = value.Value,
@@ -263,7 +259,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesDID.Add(new BiotaPropertiesDID
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     Value = value.Value,
@@ -372,7 +367,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesEventFilter.Add(new BiotaPropertiesEventFilter
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Event = value.Event,
                 });
@@ -382,7 +376,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesFloat.Add(new BiotaPropertiesFloat
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     Value = value.Value,
@@ -420,7 +413,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesIID.Add(new BiotaPropertiesIID
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     Value = value.Value,
@@ -431,7 +423,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesInt.Add(new BiotaPropertiesInt
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     Value = value.Value,
@@ -442,7 +433,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesInt64.Add(new BiotaPropertiesInt64
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     Value = value.Value,
@@ -465,7 +455,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesPosition.Add(new BiotaPropertiesPosition
                 {
-                    Id = 0,
                     ObjectId = guid,
                     PositionType = value.PositionType,
                     ObjCellId = value.ObjCellId,
@@ -483,7 +472,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesSkill.Add(new BiotaPropertiesSkill
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     LevelFromPP = value.LevelFromPP,
@@ -499,7 +487,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesSpellBook.Add(new BiotaPropertiesSpellBook
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Spell = value.Spell,
                     Probability = value.Probability,
@@ -510,7 +497,6 @@ namespace ACE.Plugin.Transfer
             {
                 result.BiotaPropertiesString.Add(new BiotaPropertiesString
                 {
-                    Id = 0,
                     ObjectId = guid,
                     Type = value.Type,
                     Value = value.Value,
