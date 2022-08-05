@@ -9,17 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="8.2.0" />
-    <PackageReference Include="log4net" Version="2.0.14" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.4" />
+    <Compile Remove="Modules\AnyAuthenticatedModule.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Dependencies\NancyFx\src\Nancy.Authentication.Stateless\Nancy.Authentication.Stateless.csproj" />
-    <ProjectReference Include="..\..\Dependencies\NancyFx\src\Nancy\Nancy.csproj" />
+    <PackageReference Include="FluentValidation" Version="11.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.2" />
+    <PackageReference Include="log4net" Version="2.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ACE.Plugin.Crypto\ACE.Plugin.Crypto.csproj" />
-    <ProjectReference Include="..\ACE.Plugin.WebAPI\ACE.Plugin.WebAPI.csproj" />
+    <ProjectReference Include="..\ACE.Plugin.Web\ACE.Plugin.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,13 +39,14 @@
     <Reference Include="ACE.Server">
       <HintPath>..\..\Dependencies\ACE\ACE.Server.dll</HintPath>
     </Reference>
-    <Reference Include="System">
-      <HintPath>System</HintPath>
-    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modules\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="set src=$(TargetDir)&#xD;&#xA;copy &quot;$(ProjectDir)transfer.js&quot; &quot;%src%transfer.js&quot;&#xD;&#xA;&#xD;&#xA;rem these are not needed as they are included with ACE&#xD;&#xA;del /f /q &quot;%src%\ACE.Server.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Database.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.DatLoader.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Entity.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Common.*&quot;&#xD;&#xA;del /f /q &quot;%src%\Microsoft.Extensions.DependencyModel.dll&quot;&#xD;&#xA;&#xD;&#xA;rem these are not needed as they are included with ACE.Plugin.WebAPI&#xD;&#xA;del /f /q &quot;%src%\Nancy*&quot;&#xD;&#xA;&#xD;&#xA;rem plugins this plugin uses are required to also be installed and enabled&#xD;&#xA;del /f /q &quot;%src%\ACE.Plugin.Crypto.*&quot;&#xD;&#xA;del /f /q &quot;%src%\ACE.Plugin.WebAPI.*&quot;&#xD;&#xA;&#xD;&#xA;rem change the dst folder to the main ACE folder to copy needed files automatically&#xD;&#xA;set dst=E:\from desktop\ACE\ACE-plugin\Source\ACE.Server\bin\x64\Debug\netcoreapp2.1\&#xD;&#xA;set subdst=Plugins\ACE.Plugin.Transfer&#xD;&#xA;IF EXIST %dst% (&#xD;&#xA;robocopy &quot;%src% &quot; &quot;%dst%%subdst% &quot; &quot;*.*&quot; /XO /NJH /NP&#xD;&#xA;SET ERRORLEVEL = 0&#xD;&#xA;)&#xD;&#xA;" />
+    <Exec Command="set src=$(TargetDir)&#xD;&#xA;copy &quot;$(ProjectDir)transfer.js&quot; &quot;%25src%25transfer.js&quot;&#xD;&#xA;&#xD;&#xA;rem these are not needed as they are included with ACE&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Server.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Database.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.DatLoader.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Entity.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Common.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\Microsoft.Extensions.DependencyModel.dll&quot;&#xD;&#xA;&#xD;&#xA;rem plugins this plugin uses are required to also be installed and enabled&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Plugin.Crypto.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Plugin.WebAPI.*&quot;&#xD;&#xA;&#xD;&#xA;rem change the dst folder to the main ACE folder to copy needed files automatically&#xD;&#xA;set dst=$(SolutionDir)Dependencies\ACE\&#xD;&#xA;set subdst=Plugins\ACE.Plugin.Transfer&#xD;&#xA;IF EXIST %25dst%25 (&#xD;&#xA;robocopy &quot;%25src%25 &quot; &quot;%25dst%25%25subdst%25 &quot; &quot;*.*&quot; /XO /NJH /NP /S&#xD;&#xA;SET ERRORLEVEL = 0&#xD;&#xA;)" />
   </Target>
 
 </Project>

@@ -111,7 +111,7 @@ public class Startup
 
             // authenticated
             WebEndpoints.GetCharacters(endpoints);
-            WebEndpoints.GetOnlineFriends(endpoints);
+            WebEndpoints.GetFriends(endpoints);
 
             // authenticated - admin
             WebEndpoints.PostCommand(endpoints);
