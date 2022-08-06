@@ -1,5 +1,6 @@
 using ACE.Common;
 using FluentValidation;
+using FluentValidation.Results;
 
 namespace ACE.Plugin.Transfer.Model.Character
 {
@@ -16,7 +17,7 @@ namespace ACE.Plugin.Transfer.Model.Character
             RuleFor(request => request.NewCharacterName).NotEmpty().WithMessage("You must specify the character name to use.");
             RuleFor(request => request.NewCharacterName).Custom((str, _) =>
             {
-                if (TransferManagerUtil.StringContainsInvalidChars(GameConfiguration.AllowedCharacterNameCharacters, str))
+                if (!string.IsNullOrWhiteSpace(str) && TransferManagerUtil.StringContainsInvalidChars(GameConfiguration.AllowedCharacterNameCharacters, str))
                 {
                     _.AddFailure("The new character name contains invalid characters.");
                 }
@@ -24,6 +25,15 @@ namespace ACE.Plugin.Transfer.Model.Character
             RuleFor(request => request.NewCharacterName.Trim())
                 .Length(GameConfiguration.CharacterNameMinimumLength, GameConfiguration.CharacterNameMaximumLength)
                 .WithMessage("The new character name must be 1 to 32 characters in length.");
+        }
+        protected override bool PreValidate(ValidationContext<CharacterImportRequestModel> context, ValidationResult result)
+        {
+            if (context.InstanceToValidate == null)
+            {
+                result.Errors.Add(new ValidationFailure("", "a request body must be supplied"));
+                return false;
+            }
+            return true;
         }
     }
     public class CharacterImportResponseModel

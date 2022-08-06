@@ -1,6 +1,5 @@
 using FluentValidation;
 using FluentValidation.Results;
-using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace ACE.Plugin.Transfer.Model.Character
 {
@@ -19,7 +18,7 @@ namespace ACE.Plugin.Transfer.Model.Character
         {
             if (context.InstanceToValidate == null)
             {
-                result.Errors.Add(new ValidationFailure("", "Please ensure a model was supplied."));
+                result.Errors.Add(new ValidationFailure("", "a request body must be supplied"));
                 return false;
             }
             return true;

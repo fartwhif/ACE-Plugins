@@ -27,6 +27,7 @@ using ACE.Server.Managers;
 using ACE.Plugin.Crypto.Managers;
 using ACE.Plugin.Transfer.Common;
 using ACE.Plugin.Transfer.Model.Character;
+using ACE.Server.Network.Managers;
 
 namespace ACE.Plugin.Transfer.Managers
 {
@@ -83,6 +84,12 @@ namespace ACE.Plugin.Transfer.Managers
                 Web.Startup.AddEndpointRegistrar((endpoints) =>
                 {
                     WebEndpoints.CharacterBackup(endpoints);
+                    WebEndpoints.CharacterImport(endpoints);
+                    WebEndpoints.MigrationBegin(endpoints);
+                    WebEndpoints.MigrationCancel(endpoints);
+                    WebEndpoints.MigrationComplete(endpoints);
+                    WebEndpoints.MigrationCheck(endpoints);
+                    WebEndpoints.MigrationDownload(endpoints);
                 });
             }
         }
@@ -273,7 +280,7 @@ namespace ACE.Plugin.Transfer.Managers
 
             // deserialize
             PackageMetadata packInfo = null;
-            List<Biota> snapshot = new List<Biota>();
+            List<Entity.Models.Biota> snapshot = new List<Entity.Models.Biota>();
             foreach (FileInfo fil in diTmpDirPath.GetFiles("*.json"))
             {
                 if (fil.Name == "packinfo.json")
@@ -282,7 +289,7 @@ namespace ACE.Plugin.Transfer.Managers
                 }
                 else
                 {
-                    snapshot.Add(JsonConvert.DeserializeObject<Biota>(File.ReadAllText(fil.FullName), TransferManagerUtil.GetSerializationSettings()));
+                    snapshot.Add(JsonConvert.DeserializeObject<Entity.Models.Biota>(File.ReadAllText(fil.FullName), TransferManagerUtil.GetSerializationSettings()));
                 }
             }
 
@@ -315,11 +322,11 @@ namespace ACE.Plugin.Transfer.Managers
             }
 
             // isolate player biota
-            List<Biota> playerCollection = snapshot.Where(k =>
+            List<Entity.Models.Biota> playerCollection = snapshot.Where(k =>
                 (
-                    k.WeenieType == (uint)WeenieType.Admin ||
-                    k.WeenieType == (uint)WeenieType.Sentinel ||
-                    k.WeenieType == (uint)WeenieType.Creature
+                    k.WeenieType == WeenieType.Admin ||
+                    k.WeenieType == WeenieType.Sentinel ||
+                    k.WeenieType == WeenieType.Creature
                 )
             ).ToList();
 
@@ -333,28 +340,35 @@ namespace ACE.Plugin.Transfer.Managers
                 Directory.Delete(diTmpDirPath.FullName, true);
                 return new ImportAndMigrateResult() { FailReason = ImportAndMigrateFailiureReason.CannotFindCharacter };
             }
-            IEnumerable<Biota> possessedBiotas2 = snapshot.Except(playerCollection).ToList();
-            Biota newCharBiota = playerCollection.First();
-            uint playerOrigId = newCharBiota.Id;
+            IEnumerable<Entity.Models.Biota> possessedBiotas2 = snapshot.Except(playerCollection).ToList();
+            Entity.Models.Biota newCharEntityBiota = playerCollection.First();
+            uint playerOrigId = newCharEntityBiota.Id;
 
             // refactor
             ObjectGuid guid = GuidManager.NewPlayerGuid();
-            newCharBiota = TransferManagerUtil.SetGuidAndScrubPKs(newCharBiota, guid.Full);
-            List<BiotaPropertiesString> nameProp = newCharBiota.BiotaPropertiesString.Where(k => k.Type == (ushort)PropertyString.Name).ToList();
+
+            // yikes?
+            var newCharShardBiota = Database.Adapter.BiotaConverter.ConvertFromEntityBiota(newCharEntityBiota);
+            newCharShardBiota = TransferManagerUtil.SetGuidAndScrubPKs(newCharShardBiota, guid.Full);
+            newCharEntityBiota = Database.Adapter.BiotaConverter.ConvertToEntityBiota(newCharShardBiota);
+
+            var nameProp = newCharEntityBiota.PropertiesString.Where(k => k.Key == PropertyString.Name).ToList();
             if (nameProp.Count != 1)
             {
                 Directory.Delete(diTmpDirPath.FullName, true);
                 return new ImportAndMigrateResult() { FailReason = ImportAndMigrateFailiureReason.MalformedCharacterData };
             }
             string FormerCharName = nameProp.First().Value;
-            nameProp.First().Value = metadata.NewCharacterName;
+            newCharEntityBiota.PropertiesString[PropertyString.Name] = metadata.NewCharacterName;
 
-            Collection<(Biota biota, ReaderWriterLockSlim rwLock)> possessedBiotas = new Collection<(Biota biota, ReaderWriterLockSlim rwLock)>();
-            foreach (Biota possession in possessedBiotas2)
+            Collection<(Biota biota, ReaderWriterLockSlim rwLock)> possessedShardBiotas = new Collection<(Biota biota, ReaderWriterLockSlim rwLock)>();
+            foreach (Entity.Models.Biota possession in possessedBiotas2)
             {
-                possessedBiotas.Add((TransferManagerUtil.SetGuidAndScrubPKs(possession, GuidManager.NewDynamicGuid().Full), new ReaderWriterLockSlim()));
+                var entBiota = ACE.Database.Adapter.BiotaConverter.ConvertFromEntityBiota(possession);
+
+                possessedShardBiotas.Add((TransferManagerUtil.SetGuidAndScrubPKs(entBiota, GuidManager.NewDynamicGuid().Full), new ReaderWriterLockSlim()));
             }
-            foreach ((Biota biota, ReaderWriterLockSlim rwLock) item in possessedBiotas)
+            foreach ((Biota biota, ReaderWriterLockSlim rwLock) item in possessedShardBiotas)
             {
                 IEnumerable<BiotaPropertiesIID> instances = item.biota.BiotaPropertiesIID.Where(k => k.Value == playerOrigId);
                 foreach (BiotaPropertiesIID instance in instances)
@@ -362,7 +376,7 @@ namespace ACE.Plugin.Transfer.Managers
                     instance.Value = guid.Full;
                 }
             }
-            foreach ((Biota biota, ReaderWriterLockSlim rwLock) item in possessedBiotas)
+            foreach ((Biota biota, ReaderWriterLockSlim rwLock) item in possessedShardBiotas)
             {
                 IEnumerable<BiotaPropertiesBookPageData> instances = item.biota.BiotaPropertiesBookPageData.Where(k => k.AuthorId == playerOrigId);
                 foreach (BiotaPropertiesBookPageData instance in instances)
@@ -372,54 +386,65 @@ namespace ACE.Plugin.Transfer.Managers
                 //TO-DO: scrub other authors?
             }
 
-            //// build            
-            //Weenie weenie = DatabaseManager.World.GetCachedWeenie(newCharBiota.WeenieClassId);
-            //weenie.Type = newCharBiota.WeenieType;
-            //Player newPlayer = new Player(weenie, guid, metadata.AccountId)
-            //{
-            //    Location = new Position(0xD655002C, 126.918549f, 81.756134f, 49.698814f, 0.794878f, 0.000000f, 0.000000f, -0.606769f), // Shoushi starter area
-            //    Name = metadata.NewCharacterName,
-            //};
-            //newPlayer.Character.Name = metadata.NewCharacterName;
+            // build            
+            Entity.Models.Weenie weenie = DatabaseManager.World.GetCachedWeenie(newCharEntityBiota.WeenieClassId);
+            weenie.WeenieType = (WeenieType)newCharEntityBiota.WeenieType;
+            Player newPlayer = new Player(weenie, guid, metadata.AccountId)
+            {
+                Location = new Position(0xD655002C, 126.918549f, 81.756134f, 49.698814f, 0.794878f, 0.000000f, 0.000000f, -0.606769f), // Shoushi starter area
+                Name = metadata.NewCharacterName,
+            };
+            newPlayer.Character.Name = metadata.NewCharacterName;
 
-            //// insert
-            //mre = new ManualResetEvent(false);
-            //bool addCharResult = false;
-            //DatabaseManager.Shard.AddCharacterInParallel(newCharBiota, newPlayer.BiotaDatabaseLock, possessedBiotas, newPlayer.Character, newPlayer.CharacterDatabaseLock, new Action<bool>((res2) =>
-            //{
-            //    addCharResult = res2;
-            //    mre.Set();
-            //}));
-            //mre.WaitOne();
-            //if (addCharResult)
-            //{
-            //    // update server
-            //    PlayerManager.AddOfflinePlayer(DatabaseManager.Shard.GetBiota(guid.Full));
-            //    DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>((chars) =>
-            //    {
-            //        Session session = WorldManager.Find(metadata.AccountId);
-            //        if (session != null)
-            //        {
-            //            session.Characters.Add(chars.First(k => k.Id == guid.Full));
-            //        }
-            //    }));
-            //    DatabaseManager.Shard.SaveCharacterTransfer(new CharacterTransfer()
-            //    {
-            //        AccountId = metadata.AccountId,
-            //        SourceId = packInfo.CharacterId,
-            //        TransferType = (uint)metadata.PackageType,
-            //        TransferTime = (ulong)Time.GetUnixTime(),
-            //        Cookie = metadata.Cookie,
-            //        SourceBaseUrl = (importBytes == null) ? metadata.ImportUrl.ToString() : null,
-            //        SourceThumbprint = verifiedSourceThumbprint,
-            //        TargetId = guid.Full,
-            //    }, new ReaderWriterLockSlim(), null);
-            //}
-            //else
-            //{
-            //    Directory.Delete(diTmpDirPath.FullName, true);
-            //    return new ImportAndMigrateResult() { FailReason = ImportAndMigrateFailiureReason.AddCharacterFailed };
-            //}
+            // insert
+            mre = new ManualResetEvent(false);
+            bool addCharResult = false;
+
+
+            var possessedEntityBiotas = new Collection<(Entity.Models.Biota biota, ReaderWriterLockSlim rwLock)>();
+            foreach (var possession in possessedShardBiotas)
+                possessedEntityBiotas.Add((Database.Adapter.BiotaConverter.ConvertToEntityBiota(possession.biota), possession.rwLock));
+
+            DatabaseManager.Shard.AddCharacterInParallel(newCharEntityBiota, newPlayer.BiotaDatabaseLock, possessedEntityBiotas, newPlayer.Character, newPlayer.CharacterDatabaseLock, new Action<bool>((res2) =>
+            {
+                addCharResult = res2;
+                mre.Set();
+            }));
+            mre.WaitOne();
+            if (addCharResult)
+            {
+                // update server
+
+                var playerEntityBiota = Database.Adapter.BiotaConverter.ConvertToEntityBiota(
+                    DatabaseManager.Shard.BaseDatabase.GetBiota(guid.Full));
+
+                PlayerManager.AddOfflinePlayer(playerEntityBiota);
+                DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>((chars) =>
+                {
+                    
+                    Session session = NetworkManager.Find(metadata.AccountId);
+                    if (session != null)
+                    {
+                        session.Characters.Add(chars.First(k => k.Id == guid.Full));
+                    }
+                }));
+                DatabaseManager.Shard.SaveCharacterTransfer(new CharacterTransfer()
+                {
+                    AccountId = metadata.AccountId,
+                    SourceId = packInfo.CharacterId,
+                    TransferType = (uint)metadata.PackageType,
+                    TransferTime = (ulong)Time.GetUnixTime(),
+                    Cookie = metadata.Cookie,
+                    SourceBaseUrl = (importBytes == null) ? metadata.ImportUrl.ToString() : null,
+                    SourceThumbprint = verifiedSourceThumbprint,
+                    TargetId = guid.Full,
+                }, new ReaderWriterLockSlim(), null);
+            }
+            else
+            {
+                Directory.Delete(diTmpDirPath.FullName, true);
+                return new ImportAndMigrateResult() { FailReason = ImportAndMigrateFailiureReason.AddCharacterFailed };
+            }
 
             // cleanup
             Directory.Delete(diTmpDirPath.FullName, true);
@@ -496,10 +521,11 @@ namespace ACE.Plugin.Transfer.Managers
                 mre.Set();
             });
             mre.WaitOne();
-            if (xfer.AccountId != metadata.AccountId)
-            {
-                return new MigrateCloseResult();
-            }
+            //disabled accountid check for now, i lost track of the newest download endpoint that I suspect sets metadata.AccountId
+            //if (xfer.AccountId != metadata.AccountId)
+            //{
+            //    return new MigrateCloseResult();
+            //}
             Character character = null;
             mre = new ManualResetEvent(false);
             DatabaseManager.Shard.GetCharacters(xfer.AccountId, false, new Action<List<Character>>(new Action<List<Character>>((chars) =>
