@@ -5,8 +5,9 @@
     },
     "Profile 1": {
       "commandName": "Executable",
-      "executablePath": "C:\\projects\\ace\\ACE-Plugins\\Dependencies\\ACE\\ACE.Server.exe",
-      "workingDirectory": "C:\\projects\\ace\\ACE-Plugins\\Dependencies\\ACE"
+      "executablePath": "C:\\projects\\ace\\ACE-Plugins\\Dependencies\\startace.bat",
+      "workingDirectory": "C:\\projects\\ace\\ACE-Plugins\\Dependencies\\",
+      "nativeDebugging": true
     }
   }
 }
