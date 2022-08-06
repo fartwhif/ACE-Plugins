@@ -7,7 +7,7 @@ namespace ACE.Plugin.Transfer
     {
         public CharacterSnapshot() { }
         public Character Character { get; set; }
-        public Biota Player { get; set; }
+        public Entity.Models.Biota Player { get; set; }
         public PossessedBiotas PossessedBiotas { get; set; }
     }
 }

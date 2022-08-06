@@ -553,43 +553,42 @@ namespace ACE.Plugin.Transfer.Managers
             // obtain character snapshot
             CharacterSnapshot snapshot = new CharacterSnapshot();
             TaskCompletionSource<object> tsc = new TaskCompletionSource<object>();
-            tsc.SetResult(new object());//stub
-            //OfflinePlayer offlinePlayer = PlayerManager.GetOfflinePlayer(metadata.CharacterId);
-            //if (offlinePlayer == null)
-            //{
-            //    return null; // character must be logged out
-            //}
-            //snapshot.Player = offlinePlayer.Biota;
-            //DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>(new Action<List<Character>>((chars) =>
-            //{
-            //    snapshot.Character = chars.FirstOrDefault(k => k.Id == metadata.CharacterId);
+            OfflinePlayer offlinePlayer = PlayerManager.GetOfflinePlayer(metadata.CharacterId);
+            if (offlinePlayer == null)
+            {
+                return null; // character must be logged out
+            }
+            snapshot.Player = offlinePlayer.Biota;
+            DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>(new Action<List<Character>>((chars) =>
+            {
+                snapshot.Character = chars.FirstOrDefault(k => k.Id == metadata.CharacterId);
 
-            //    if (snapshot.Character == null)
-            //    {
-            //        tsc.SetResult(new object());
-            //        return;
-            //    }
+                if (snapshot.Character == null)
+                {
+                    tsc.SetResult(new object());
+                    return;
+                }
 
-            //    if (snapshot.Character.IsReadOnly)
-            //    {
-            //        snapshot.Character = null;
-            //        tsc.SetResult(new object());
-            //        return;
-            //    }
+                if (snapshot.Character.IsReadOnly)
+                {
+                    snapshot.Character = null;
+                    tsc.SetResult(new object());
+                    return;
+                }
 
-            //    if (metadata.PackageType == PackageType.Migrate)
-            //    {
-            //        // place character in migrating state
-            //        snapshot.Character.IsReadOnly = true;
-            //        DatabaseManager.Shard.SaveCharacter(snapshot.Character, new ReaderWriterLockSlim(), null);
-            //    }
+                if (metadata.PackageType == PackageType.Migrate)
+                {
+                    // place character in migrating state
+                    snapshot.Character.IsReadOnly = true;
+                    DatabaseManager.Shard.SaveCharacter(snapshot.Character, new ReaderWriterLockSlim(), null);
+                }
 
-            //    DatabaseManager.Shard.GetPossessedBiotasInParallel(snapshot.Character.Id, new Action<PossessedBiotas>((pb) =>
-            //    {
-            //        snapshot.PossessedBiotas = pb;
-            //        tsc.SetResult(new object());
-            //    }));
-            //})));
+                DatabaseManager.Shard.GetPossessedBiotasInParallel(snapshot.Character.Id, new Action<PossessedBiotas>((pb) =>
+                {
+                    snapshot.PossessedBiotas = pb;
+                    tsc.SetResult(new object());
+                }));
+            })));
             await tsc.Task;
 
             if (snapshot.Character == null)
