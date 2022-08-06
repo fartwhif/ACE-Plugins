@@ -2,7 +2,6 @@ using ACE.Database.Models.Shard;
 using ACE.Plugin.Crypto.Managers;
 using ACE.Plugin.Transfer.Enums;
 using ACE.Plugin.Transfer.Responses;
-using ACE.Server.Managers;
 using ACE.Server.Plugin;
 using log4net;
 using Newtonsoft.Json;
