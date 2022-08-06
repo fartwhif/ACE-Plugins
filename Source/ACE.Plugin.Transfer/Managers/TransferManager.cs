@@ -355,54 +355,54 @@ namespace ACE.Plugin.Transfer.Managers
                 //TO-DO: scrub other authors?
             }
 
-            // build            
-            Weenie weenie = DatabaseManager.World.GetCachedWeenie(newCharBiota.WeenieClassId);
-            weenie.Type = newCharBiota.WeenieType;
-            Player newPlayer = new Player(weenie, guid, metadata.AccountId)
-            {
-                Location = new Position(0xD655002C, 126.918549f, 81.756134f, 49.698814f, 0.794878f, 0.000000f, 0.000000f, -0.606769f), // Shoushi starter area
-                Name = metadata.NewCharacterName,
-            };
-            newPlayer.Character.Name = metadata.NewCharacterName;
+            //// build            
+            //Weenie weenie = DatabaseManager.World.GetCachedWeenie(newCharBiota.WeenieClassId);
+            //weenie.Type = newCharBiota.WeenieType;
+            //Player newPlayer = new Player(weenie, guid, metadata.AccountId)
+            //{
+            //    Location = new Position(0xD655002C, 126.918549f, 81.756134f, 49.698814f, 0.794878f, 0.000000f, 0.000000f, -0.606769f), // Shoushi starter area
+            //    Name = metadata.NewCharacterName,
+            //};
+            //newPlayer.Character.Name = metadata.NewCharacterName;
 
-            // insert
-            mre = new ManualResetEvent(false);
-            bool addCharResult = false;
-            DatabaseManager.Shard.AddCharacterInParallel(newCharBiota, newPlayer.BiotaDatabaseLock, possessedBiotas, newPlayer.Character, newPlayer.CharacterDatabaseLock, new Action<bool>((res2) =>
-            {
-                addCharResult = res2;
-                mre.Set();
-            }));
-            mre.WaitOne();
-            if (addCharResult)
-            {
-                // update server
-                PlayerManager.AddOfflinePlayer(DatabaseManager.Shard.GetBiota(guid.Full));
-                DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>((chars) =>
-                {
-                    Session session = WorldManager.Find(metadata.AccountId);
-                    if (session != null)
-                    {
-                        session.Characters.Add(chars.First(k => k.Id == guid.Full));
-                    }
-                }));
-                DatabaseManager.Shard.SaveCharacterTransfer(new CharacterTransfer()
-                {
-                    AccountId = metadata.AccountId,
-                    SourceId = packInfo.CharacterId,
-                    TransferType = (uint)metadata.PackageType,
-                    TransferTime = (ulong)Time.GetUnixTime(),
-                    Cookie = metadata.Cookie,
-                    SourceBaseUrl = (importBytes == null) ? metadata.ImportUrl.ToString() : null,
-                    SourceThumbprint = verifiedSourceThumbprint,
-                    TargetId = guid.Full,
-                }, new ReaderWriterLockSlim(), null);
-            }
-            else
-            {
-                Directory.Delete(diTmpDirPath.FullName, true);
-                return new ImportAndMigrateResult() { FailReason = ImportAndMigrateFailiureReason.AddCharacterFailed };
-            }
+            //// insert
+            //mre = new ManualResetEvent(false);
+            //bool addCharResult = false;
+            //DatabaseManager.Shard.AddCharacterInParallel(newCharBiota, newPlayer.BiotaDatabaseLock, possessedBiotas, newPlayer.Character, newPlayer.CharacterDatabaseLock, new Action<bool>((res2) =>
+            //{
+            //    addCharResult = res2;
+            //    mre.Set();
+            //}));
+            //mre.WaitOne();
+            //if (addCharResult)
+            //{
+            //    // update server
+            //    PlayerManager.AddOfflinePlayer(DatabaseManager.Shard.GetBiota(guid.Full));
+            //    DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>((chars) =>
+            //    {
+            //        Session session = WorldManager.Find(metadata.AccountId);
+            //        if (session != null)
+            //        {
+            //            session.Characters.Add(chars.First(k => k.Id == guid.Full));
+            //        }
+            //    }));
+            //    DatabaseManager.Shard.SaveCharacterTransfer(new CharacterTransfer()
+            //    {
+            //        AccountId = metadata.AccountId,
+            //        SourceId = packInfo.CharacterId,
+            //        TransferType = (uint)metadata.PackageType,
+            //        TransferTime = (ulong)Time.GetUnixTime(),
+            //        Cookie = metadata.Cookie,
+            //        SourceBaseUrl = (importBytes == null) ? metadata.ImportUrl.ToString() : null,
+            //        SourceThumbprint = verifiedSourceThumbprint,
+            //        TargetId = guid.Full,
+            //    }, new ReaderWriterLockSlim(), null);
+            //}
+            //else
+            //{
+            //    Directory.Delete(diTmpDirPath.FullName, true);
+            //    return new ImportAndMigrateResult() { FailReason = ImportAndMigrateFailiureReason.AddCharacterFailed };
+            //}
 
             // cleanup
             Directory.Delete(diTmpDirPath.FullName, true);
@@ -536,43 +536,43 @@ namespace ACE.Plugin.Transfer.Managers
             // obtain character snapshot
             CharacterSnapshot snapshot = new CharacterSnapshot();
             TaskCompletionSource<object> tsc = new TaskCompletionSource<object>();
+            tsc.SetResult(new object());//stub
+            //OfflinePlayer offlinePlayer = PlayerManager.GetOfflinePlayer(metadata.CharacterId);
+            //if (offlinePlayer == null)
+            //{
+            //    return null; // character must be logged out
+            //}
+            //snapshot.Player = offlinePlayer.Biota;
+            //DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>(new Action<List<Character>>((chars) =>
+            //{
+            //    snapshot.Character = chars.FirstOrDefault(k => k.Id == metadata.CharacterId);
 
-            OfflinePlayer offlinePlayer = PlayerManager.GetOfflinePlayer(metadata.CharacterId);
-            if (offlinePlayer == null)
-            {
-                return null; // character must be logged out
-            }
-            snapshot.Player = offlinePlayer.Biota;
-            DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>(new Action<List<Character>>((chars) =>
-            {
-                snapshot.Character = chars.FirstOrDefault(k => k.Id == metadata.CharacterId);
+            //    if (snapshot.Character == null)
+            //    {
+            //        tsc.SetResult(new object());
+            //        return;
+            //    }
 
-                if (snapshot.Character == null)
-                {
-                    tsc.SetResult(new object());
-                    return;
-                }
+            //    if (snapshot.Character.IsReadOnly)
+            //    {
+            //        snapshot.Character = null;
+            //        tsc.SetResult(new object());
+            //        return;
+            //    }
 
-                if (snapshot.Character.IsReadOnly)
-                {
-                    snapshot.Character = null;
-                    tsc.SetResult(new object());
-                    return;
-                }
+            //    if (metadata.PackageType == PackageType.Migrate)
+            //    {
+            //        // place character in migrating state
+            //        snapshot.Character.IsReadOnly = true;
+            //        DatabaseManager.Shard.SaveCharacter(snapshot.Character, new ReaderWriterLockSlim(), null);
+            //    }
 
-                if (metadata.PackageType == PackageType.Migrate)
-                {
-                    // place character in migrating state
-                    snapshot.Character.IsReadOnly = true;
-                    DatabaseManager.Shard.SaveCharacter(snapshot.Character, new ReaderWriterLockSlim(), null);
-                }
-
-                DatabaseManager.Shard.GetPossessedBiotasInParallel(snapshot.Character.Id, new Action<PossessedBiotas>((pb) =>
-                {
-                    snapshot.PossessedBiotas = pb;
-                    tsc.SetResult(new object());
-                }));
-            })));
+            //    DatabaseManager.Shard.GetPossessedBiotasInParallel(snapshot.Character.Id, new Action<PossessedBiotas>((pb) =>
+            //    {
+            //        snapshot.PossessedBiotas = pb;
+            //        tsc.SetResult(new object());
+            //    }));
+            //})));
             await tsc.Task;
 
             if (snapshot.Character == null)
