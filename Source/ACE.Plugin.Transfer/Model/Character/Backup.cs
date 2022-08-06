@@ -1,4 +1,6 @@
 using FluentValidation;
+using FluentValidation.Results;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace ACE.Plugin.Transfer.Model.Character
 {
@@ -10,9 +12,19 @@ namespace ACE.Plugin.Transfer.Model.Character
     {
         public CharacterBackupRequestModelValidator()
         {
-            RuleFor(request => request.CharacterId).NotEmpty().WithMessage("You must specify the character Id.");
-            RuleFor(request => request.CharacterId).GreaterThan((uint)0).WithMessage("You must specify a valid character Id.");
+            RuleFor(request => request.CharacterId).NotEmpty().GreaterThan((uint)0).WithMessage("You must specify a valid character Id.");
         }
+
+        protected override bool PreValidate(ValidationContext<CharacterBackupRequestModel> context, ValidationResult result)
+        {
+            if (context.InstanceToValidate == null)
+            {
+                result.Errors.Add(new ValidationFailure("", "Please ensure a model was supplied."));
+                return false;
+            }
+            return true;
+        }
+
     }
     public class CharacterBackupResponseModel
     {

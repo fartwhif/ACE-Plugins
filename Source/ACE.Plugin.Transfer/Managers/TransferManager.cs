@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using ACE.Server.Managers;
 using ACE.Plugin.Crypto.Managers;
 using ACE.Plugin.Transfer.Common;
+using ACE.Plugin.Transfer.Model.Character;
 
 namespace ACE.Plugin.Transfer.Managers
 {
@@ -67,6 +68,22 @@ namespace ACE.Plugin.Transfer.Managers
             foreach (string trusted in TransferConfigManager.Config.AllowMigrationFrom)
             {
                 log.Debug($"AllowMigrationFrom Entry: {trusted}");
+            }
+
+            //wire up ASP.NET Core within web
+            //since transfer is (optionally) dependent on web, search for it, and if present, add the endpoints
+            var asms = AppDomain.CurrentDomain.GetAssemblies();
+            var transfer = asms.FirstOrDefault(m => m.GetName().Name.StartsWith("ACE.Plugin.Web"));
+            if (transfer != null)
+            {
+                Web.Startup.AddValidationRegistrar((options) =>
+                {
+                    options.RegisterValidatorsFromAssemblyContaining<CharacterBackupRequestModel>();
+                });
+                Web.Startup.AddEndpointRegistrar((endpoints) =>
+                {
+                    WebEndpoints.CharacterBackup(endpoints);
+                });
             }
         }
         /// <summary>

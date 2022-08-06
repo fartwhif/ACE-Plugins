@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -17,12 +18,29 @@ namespace ACE.Plugin.Web;
 
 public class Startup
 {
+    private static List<Action<FluentValidationMvcConfiguration>> ValidationRegistrars = new List<Action<FluentValidationMvcConfiguration>>();
+    private static List<Action<IEndpointRouteBuilder>> EndpointRegistrars = new List<Action<IEndpointRouteBuilder>>();
+
+    public static void AddValidationRegistrar(Action<FluentValidationMvcConfiguration> registrar)
+    {
+        ValidationRegistrars.Add(registrar);
+    }
+    public static void AddEndpointRegistrar(Action<IEndpointRouteBuilder> registrar)
+    {
+        EndpointRegistrars.Add(registrar);
+    }
+
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddFluentValidation(options =>
         {
-            options.AutomaticValidationEnabled = true;
+            options.AutomaticValidationEnabled = true;//bug: are we using this correctly?  doesn't seem to work.  Use manual validation for now.
             options.RegisterValidatorsFromAssemblyContaining<AdminCommandRequestModelValidator>();
+
+            for (int i = 0; i < ValidationRegistrars.Count; i++)
+            {
+                ValidationRegistrars[i](options);
+            }
         });
 
         services.AddScoped<IAccountService, AccountService>();
@@ -118,6 +136,10 @@ public class Startup
             WebEndpoints.GetPlayerLocations(endpoints);
             WebEndpoints.GetLandblockStatus(endpoints);
 
+            for (int i = 0; i < EndpointRegistrars.Count; i++)
+            {
+                EndpointRegistrars[i](endpoints);
+            }
 
             //for example
             //endpoints.MapPut("customers/block/{customerId}", async ([FromRoute] string customerId, [FromBody] BlockCustomer blockCustomer, [FromServices] ICustomersRepository customersRepository) =>

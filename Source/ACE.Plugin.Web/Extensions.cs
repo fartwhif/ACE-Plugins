@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace ACE.Plugin.Web
 {
-    internal static class Extensions
+    public static class Extensions
     {
         public static string Ok(this HttpContext context, object obj)
         {
