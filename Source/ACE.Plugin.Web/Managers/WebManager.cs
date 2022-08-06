@@ -1,4 +1,3 @@
-using ACE.Plugin.Crypto.Managers;
 using ACE.Plugin.Web.Common;
 using ACE.Plugin.Web.Model;
 using ACE.Plugin.Web.Model.Admin;
@@ -88,11 +87,12 @@ namespace ACE.Plugin.Web.Managers
                 {
                     return;
                 }
-                var certs = Path.Combine(PluginManager.PathToACEFolder, "certificates");
+                var certPath = Path.Combine(PluginManager.PathToACEFolder, "certificates", "web.pfx");
                 var builder = new WebHostBuilder();
                 builder.UseKestrel();
                 builder.UseUrls($"http://{ListenConfiguration.Address}:{ListenConfiguration.Port}");
-                if (CertificateManager.CertificateWeb != null)
+
+                if (File.Exists(certPath))
                 {
                     builder.ConfigureKestrel(serverOptions =>
                     {
@@ -101,7 +101,7 @@ namespace ACE.Plugin.Web.Managers
                             listenOptions
                                 .UseHttps(new HttpsConnectionAdapterOptions()
                                 {
-                                    ServerCertificate = new X509Certificate2(CertificateManager.CertificateWeb)
+                                    ServerCertificate = new X509Certificate2(certPath)
                                 });
                         });
                     });

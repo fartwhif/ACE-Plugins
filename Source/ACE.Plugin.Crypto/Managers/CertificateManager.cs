@@ -1,5 +1,4 @@
 ﻿using ACE.Plugin.Crypto.Common;
-using ACE.Server.Managers;
 using ACE.Server.Plugin;
 using log4net;
 using System;
