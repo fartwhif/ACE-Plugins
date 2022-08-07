@@ -19,6 +19,9 @@
     <Reference Include="ACE.Common">
       <HintPath>..\..\Dependencies\ACE\ACE.Common.dll</HintPath>
     </Reference>
+    <Reference Include="ACE.Entity">
+      <HintPath>..\..\Dependencies\ACE\ACE.Entity.dll</HintPath>
+    </Reference>
     <Reference Include="ACE.Server">
       <HintPath>..\..\Dependencies\ACE\ACE.Server.dll</HintPath>
     </Reference>

@@ -28,6 +28,8 @@ using ACE.Plugin.Crypto.Managers;
 using ACE.Plugin.Transfer.Common;
 using ACE.Plugin.Transfer.Model.Character;
 using ACE.Server.Network.Managers;
+using ACE.Server.Command;
+using ACE.Plugin.Transfer.Command;
 
 namespace ACE.Plugin.Transfer.Managers
 {
@@ -92,6 +94,10 @@ namespace ACE.Plugin.Transfer.Managers
                     WebEndpoints.MigrationDownload(endpoints);
                 });
             }
+            CommandManager.AddCommandHandlerRegistrar((commandHandlers) =>
+            {
+                Commands.RegisterCommands(commandHandlers);
+            });
         }
         /// <summary>
         /// Import or migrate a character.
@@ -421,7 +427,7 @@ namespace ACE.Plugin.Transfer.Managers
                 PlayerManager.AddOfflinePlayer(playerEntityBiota);
                 DatabaseManager.Shard.GetCharacters(metadata.AccountId, false, new Action<List<Character>>((chars) =>
                 {
-                    
+
                     Session session = NetworkManager.Find(metadata.AccountId);
                     if (session != null)
                     {
