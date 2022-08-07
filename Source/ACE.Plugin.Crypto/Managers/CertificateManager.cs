@@ -1,4 +1,6 @@
-﻿using ACE.Plugin.Crypto.Common;
+﻿using ACE.Plugin.Crypto.Command;
+using ACE.Plugin.Crypto.Common;
+using ACE.Server.Command;
 using ACE.Server.Plugin;
 using log4net;
 using System;
@@ -143,6 +145,11 @@ namespace ACE.Plugin.Crypto.Managers
         {
             InitializeWebCert();
             InitializeTransferCert();
+
+            CommandManager.AddCommandHandlerRegistrar((commandHandlers) =>
+            {
+                Commands.RegisterCommands(commandHandlers);
+            });
         }
         private static string PasswordPrompt(string subject)
         {
