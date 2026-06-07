@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PreserveCompilationContext>false</PreserveCompilationContext>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.1.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.2" />
-    <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="log4net" Version="2.0.17" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,23 +22,24 @@
   <ItemGroup>
     <Reference Include="ACE.Common">
       <HintPath>..\..\Dependencies\ACE\ACE.Common.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="ACE.Database">
       <HintPath>..\..\Dependencies\ACE\ACE.Database.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="ACE.DatLoader">
       <HintPath>..\..\Dependencies\ACE\ACE.DatLoader.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="ACE.Entity">
       <HintPath>..\..\Dependencies\ACE\ACE.Entity.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="ACE.Server">
       <HintPath>..\..\Dependencies\ACE\ACE.Server.dll</HintPath>
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="set src=$(TargetDir)&#xD;&#xA;copy &quot;$(ProjectDir)transfer.js&quot; &quot;%25src%25transfer.js&quot;&#xD;&#xA;&#xD;&#xA;rem these are not needed as they are included with ACE&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Server.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Database.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.DatLoader.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Entity.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Common.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\Microsoft.Extensions.DependencyModel.dll&quot;&#xD;&#xA;&#xD;&#xA;rem plugins this plugin uses are required to also be installed and enabled&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Plugin.Crypto.*&quot;&#xD;&#xA;del /f /q &quot;%25src%25\ACE.Plugin.WebAPI.*&quot;&#xD;&#xA;&#xD;&#xA;rem change the dst folder to the main ACE folder to copy needed files automatically&#xD;&#xA;set dst=$(SolutionDir)..\Dependencies\ACE\&#xD;&#xA;set subdst=Plugins\ACE.Plugin.Transfer&#xD;&#xA;IF EXIST %25dst%25 (&#xD;&#xA;robocopy &quot;%25src%25 &quot; &quot;%25dst%25%25subdst%25 &quot; &quot;*.*&quot; /XO /NJH /NP /S&#xD;&#xA;SET ERRORLEVEL = 0&#xD;&#xA;)&#xD;&#xA;rem run custom post-build script&#xD;&#xA;set cust=$(SolutionDir)..\Dependencies\custom-postbuild.bat&#xD;&#xA;IF EXIST %25cust%25 (&#xD;&#xA;call %25cust%25 $(SolutionDir)&#xD;&#xA;SET ERRORLEVEL = 0&#xD;&#xA;)" />
-  </Target>
 
 </Project>

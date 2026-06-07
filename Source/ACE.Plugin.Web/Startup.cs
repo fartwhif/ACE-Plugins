@@ -92,10 +92,10 @@ public class Startup
         WebLogging.ConfigureLogger(loggerFactory);
         WebLogging.LoggerFactory = loggerFactory;
 
-        if (env.EnvironmentName == EnvironmentName.Development)
-        {
-            app.UseDeveloperExceptionPage();
-        }
+        if (env.EnvironmentName == "Development")
+         {
+             app.UseDeveloperExceptionPage();
+         }
 
         PhysicalFileProvider fileProvider = new PhysicalFileProvider(path_wwwroot);
 
