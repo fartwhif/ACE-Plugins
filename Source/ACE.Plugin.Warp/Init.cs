@@ -119,6 +119,11 @@ namespace ACE.Plugin.WarpPlugin
             // Ensure the portal is stuck so it doesn't move
             portal.Stuck = true;
 
+            // Enable collision reporting - required for Player.OnCollideObject to call
+            // portal.OnCollideObject(). Without this, target.ReportCollisions == false
+            // and Player.OnCollideObject returns early without dispatching the collision.
+            portal.ReportCollisions = true;
+
             // Register the collide object hook BEFORE entering the world
             portal.warp_AddCollideObjectHook(OnPortalCollide);
 
