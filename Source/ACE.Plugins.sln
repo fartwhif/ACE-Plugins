@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACE.Plugin.Transfer", "ACE.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACE.Plugin.Web", "ACE.Plugin.Web\ACE.Plugin.Web.csproj", "{D53383AE-CED1-41F7-8B2B-9D9CFE8E506A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACE.Plugin.Portal", "ACE.Plugin.Portal\ACE.Plugin.Portal.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACE.Plugin.Warp", "ACE.Plugin.Warp\ACE.Plugin.Warp.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29560AE4-7454-48E8-9FF3-4CBD742B6136}"
 	ProjectSection(SolutionItems) = preProject
