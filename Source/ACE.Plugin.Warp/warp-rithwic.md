@@ -1,8 +1,8 @@
-# Rithwic Portal Plugin
+# Rithwic Warp Plugin
 
 ## Overview
 
-ACE.Plugin.Portal spawns a custom portal in Rithwic and registers a collide object hook
+ACE.Plugin.Warp spawns a custom portal in Rithwic and registers a collide object hook
 using the `warp_AddCollideObjectHook` API from ACE.Server.WorldObjects.Portal.
 
 ## What it does
@@ -19,13 +19,13 @@ using the `warp_AddCollideObjectHook` API from ACE.Server.WorldObjects.Portal.
 ## Files
 
 - `Init.cs` - Plugin entry point implementing IACEPlugin
-- `ACE.Plugin.Portal.csproj` - Project file
+- `ACE.Plugin.Warp.csproj` - Project file
 
 ## Deployment
 
-1. Build: `dotnet build ACE.Plugin.Portal.csproj -c Release`
-2. Copy DLL to: `/ace/Plugins/ACE.Plugin.Portal/ACE.Plugin.Portal.dll`
-3. Add to Config.js Plugins list: `"ACE.Plugin.Portal"`
+1. Build: `dotnet build ACE.Plugin.Warp.csproj -c Release`
+2. Copy DLL to: `/ace/Plugins/ACE.Plugin.Warp/ACE.Plugin.Warp.dll`
+3. Add to Config.js Plugins list: `"ACE.Plugin.Warp"`
 
 ## warp_AddCollideObjectHook API
 

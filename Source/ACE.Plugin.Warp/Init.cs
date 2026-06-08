@@ -15,10 +15,10 @@ using ACE.Server.WorldObjects;
 
 using log4net;
 
-namespace ACE.Plugin.PortalPlugin
+namespace ACE.Plugin.WarpPlugin
 {
     /// <summary>
-    /// Portal plugin - spawns a custom portal in Rithwic and registers a collide hook.
+    /// Warp plugin - spawns a custom portal in Rithwic and registers a collide hook.
     /// </summary>
     public class Init : IACEPlugin
     {
@@ -49,7 +49,7 @@ namespace ACE.Plugin.PortalPlugin
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Failed to spawn Rithwic portal", ex);
+                    log.Error("Failed to spawn Rithwic warp", ex);
                     ResultOfInitSink.SetResult(false);
                     return;
                 }
@@ -62,7 +62,7 @@ namespace ACE.Plugin.PortalPlugin
         /// </summary>
         private void SpawnRithwicPortal()
         {
-            log.Info("[Portal] Spawning portal in Rithwic...");
+            log.Info("[Warp] Spawning portal in Rithwic...");
 
             // Portal coordinates
             uint landblockId = 0xC98D0021; // indoor location
@@ -84,7 +84,7 @@ namespace ACE.Plugin.PortalPlugin
             Weenie weenie = DatabaseManager.World.GetWeenie(portalWcid);
             if (weenie == null)
             {
-                log.Error($"[Portal] Could not find weenie with WCID {portalWcid} (portalrithwic)");
+                log.Error($"[Warp] Could not find weenie with WCID {portalWcid} (portalrithwic)");
                 return;
             }
 
@@ -96,7 +96,7 @@ namespace ACE.Plugin.PortalPlugin
             Portal portal = WorldObjectFactory.CreateWorldObject(entityWeenie, new ObjectGuid(guid)) as Portal;
             if (portal == null)
             {
-                log.Error($"[Portal] Failed to create portal object for WCID {portalWcid}");
+                log.Error($"[Warp] Failed to create portal object for WCID {portalWcid}");
                 return;
             }
 
@@ -127,11 +127,11 @@ namespace ACE.Plugin.PortalPlugin
 
             if (success)
             {
-                log.Info($"[Portal] Successfully spawned Rithwic portal (0x{portal.Guid:X8}) at {portal.Location.ToLOCString()}");
+                log.Info($"[Warp] Successfully spawned Rithwic portal (0x{portal.Guid:X8}) at {portal.Location.ToLOCString()}");
             }
             else
             {
-                log.Error($"[Portal] Failed to add Rithwic portal to the world");
+                log.Error($"[Warp] Failed to add Rithwic portal to the world");
             }
         }
 
@@ -140,7 +140,7 @@ namespace ACE.Plugin.PortalPlugin
         /// </summary>
         private static void OnPortalCollide(Portal portal, Player player)
         {
-            log.Info($"[Portal] Player {player.Name} collided with portal {portal.Name} (0x{portal.Guid:X8})");
+            log.Info($"[Warp] Player {player.Name} collided with portal {portal.Name} (0x{portal.Guid:X8})");
 
             // Send a message to the player
             player.Session.Network.EnqueueSend(
