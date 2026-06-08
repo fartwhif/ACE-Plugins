@@ -8,6 +8,7 @@ using ACE.Database;
 using ACE.Database.Adapter;
 using ACE.Database.Models.World;
 using ACE.Entity;
+using ACE.Server.Entity.Actions;
 using ACE.Server.Factories;
 using ACE.Server.Managers;
 using ACE.Server.WorldObjects;
@@ -36,16 +37,24 @@ namespace ACE.Plugin.PortalPlugin
                 return;
             }
 
-            try
+            // Enqueue portal spawn onto the UpdateWorld thread to avoid cross-thread errors.
+            // PluginManager.Initialize() runs on the main thread, but landblock operations
+            // must execute on the UpdateWorld thread where landblock groups are ticked.
+            // The ActionQueue is processed every tick in WorldManager.UpdateWorld().
+            WorldManager.EnqueueAction(new ActionEventDelegate(() =>
             {
-                SpawnRithwicPortal();
+                try
+                {
+                    SpawnRithwicPortal();
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Failed to spawn Rithwic portal", ex);
+                    ResultOfInitSink.SetResult(false);
+                    return;
+                }
                 ResultOfInitSink.SetResult(true);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Failed to spawn Rithwic portal", ex);
-                ResultOfInitSink.SetResult(false);
-            }
+            }));
         }
 
         /// <summary>
@@ -63,10 +72,10 @@ namespace ACE.Plugin.PortalPlugin
                 newPositionX: 102.307503f,
                 newPositionY: 15.664568f,
                 newPositionZ: 22.004999f,
-                newRotationX: -0.191985f,
+                newRotationX: 0.000000f,
                 newRotationY: 0.000000f,
                 newRotationZ: 0.000000f,
-                newRotationW: 0.981398f
+                newRotationW: 0.000000f
             );
 
             // portalrithwic WeenieClassId = 1955
