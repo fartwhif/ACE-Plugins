@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using ACE.Database;
 using ACE.Database.Adapter;
 using ACE.Database.Models.World;
 using ACE.Entity;
+using ACE.Plugin.Warp.Common;
 using ACE.Server.Entity.Actions;
 using ACE.Server.Factories;
 using ACE.Server.Managers;
@@ -23,6 +25,7 @@ namespace ACE.Plugin.WarpPlugin
     public class Init : IACEPlugin
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Random random = new Random();
 
         public void AllPluginsStarted(TaskCompletionSource<bool> AllPluginsStartedSink)
         {
@@ -35,6 +38,18 @@ namespace ACE.Plugin.WarpPlugin
             {
                 log.Fatal("Invalid startup method. This is an ACEmulator plugin.");
                 return;
+            }
+
+            // Load configuration from warp.js
+            try
+            {
+                WarpConfigManager.Initialize();
+                var messageCount = WarpConfigManager.Config.CollisionMessages?.Count ?? 0;
+                log.Info($"[Warp] Configuration loaded. {messageCount} collision message(s) available.");
+            }
+            catch (Exception ex)
+            {
+                log.Warn("[Warp] Failed to load configuration from warp.js, using defaults.", ex);
             }
 
             // Enqueue portal spawn onto the UpdateWorld thread to avoid cross-thread errors.
@@ -147,10 +162,22 @@ namespace ACE.Plugin.WarpPlugin
         {
             log.Info($"[Warp] Player {player.Name} collided with portal {portal.Name} (0x{portal.Guid:X8})");
 
+            // Pick a random message from the config
+            string message;
+            var messages = WarpConfigManager.Config.CollisionMessages;
+            if (messages != null && messages.Count > 0)
+            {
+                message = messages[random.Next(messages.Count)];
+            }
+            else
+            {
+                message = "You have entered the Rithwic portal zone.";
+            }
+
             // Send a message to the player
             player.Session.Network.EnqueueSend(
                 new ACE.Server.Network.GameMessages.Messages.GameMessageSystemChat(
-                    "You have entered the Rithwic portal zone.",
+                    message,
                     ACE.Entity.Enum.ChatMessageType.System));
         }
     }

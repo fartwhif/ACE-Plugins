@@ -13,6 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="warp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="ACE.Common">
       <HintPath>..\..\Dependencies\ACE\ACE.Common.dll</HintPath>
       <Private>false</Private>
