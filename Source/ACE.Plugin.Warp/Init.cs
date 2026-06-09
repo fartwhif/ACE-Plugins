@@ -80,7 +80,7 @@ namespace ACE.Plugin.WarpPlugin
             log.Info("[Warp] Spawning portal in Rithwic...");
 
             // Portal coordinates
-            uint landblockId = 0xC98D0021; // indoor location
+            uint landblockId = 0xC98D0021; // indoor location in Rithwic
 
             var position = new Position(
                 blockCellID: landblockId,
@@ -90,11 +90,11 @@ namespace ACE.Plugin.WarpPlugin
                 newRotationX: 0.000000f,
                 newRotationY: 0.000000f,
                 newRotationZ: 0.000000f,
-                newRotationW: 0.000000f
+                newRotationW: 1.000000f  // Identity quaternion - WAS 0.0 (invalid zero-length quaternion that crashes client)
             );
 
-            // portalrithwic WeenieClassId = 1955
-            uint portalWcid = 1955;
+            // portalrithwic WeenieClassId = 1025 (NOT 1955 which is 'portalgateway' - a use-only portal)
+            uint portalWcid = 1025;
 
             Weenie weenie = DatabaseManager.World.GetWeenie(portalWcid);
             if (weenie == null)
@@ -138,6 +138,7 @@ namespace ACE.Plugin.WarpPlugin
             // portal.OnCollideObject(). Without this, target.ReportCollisions == false
             // and Player.OnCollideObject returns early without dispatching the collision.
             portal.ReportCollisions = true;
+            portal.IgnoreCollisions = false;
 
             // Register the collide object hook BEFORE entering the world
             portal.warp_AddCollideObjectHook(OnPortalCollide);
@@ -160,25 +161,35 @@ namespace ACE.Plugin.WarpPlugin
         /// </summary>
         private static void OnPortalCollide(Portal portal, Player player)
         {
-            log.Info($"[Warp] Player {player.Name} collided with portal {portal.Name} (0x{portal.Guid:X8})");
-
-            // Pick a random message from the config
-            string message;
-            var messages = WarpConfigManager.Config.CollisionMessages;
-            if (messages != null && messages.Count > 0)
+            try
             {
-                message = messages[random.Next(messages.Count)];
-            }
-            else
-            {
-                message = "You have entered the Rithwic portal zone.";
-            }
+                log.Info($"[Warp] Player {player.Name} (0x{player.Guid:X8}) collided with portal {portal.Name} (0x{portal.Guid:X8})");
+                log.Info($"[Warp] Portal destination: {portal.Destination?.ToLOCString() ?? "NULL"}");
 
-            // Send a message to the player
-            player.Session.Network.EnqueueSend(
-                new ACE.Server.Network.GameMessages.Messages.GameMessageSystemChat(
-                    message,
-                    ACE.Entity.Enum.ChatMessageType.System));
+                // Pick a random message from the config
+                string message;
+                var messages = WarpConfigManager.Config.CollisionMessages;
+                if (messages != null && messages.Count > 0)
+                {
+                    message = messages[random.Next(messages.Count)];
+                }
+                else
+                {
+                    message = "You have entered the Rithwic portal zone.";
+                }
+
+                // Send a message to the player
+                player.Session.Network.EnqueueSend(
+                    new ACE.Server.Network.GameMessages.Messages.GameMessageSystemChat(
+                        message,
+                        ACE.Entity.Enum.ChatMessageType.System));
+
+                log.Info($"[Warp] Collision message sent to {player.Name}. OnActivate will now handle teleport.");
+            }
+            catch (Exception ex)
+            {
+                log.Error($"[Warp] Error in collision handler for player {player.Name}", ex);
+            }
         }
     }
 }
