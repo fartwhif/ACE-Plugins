@@ -35,6 +35,10 @@
       <HintPath>..\..\Dependencies\ACE\ACE.Database.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="ACE.Plugin.Transfer">
+      <HintPath>..\ACE.Plugin.Transfer\bin\Release\net10.0\ACE.Plugin.Transfer.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
