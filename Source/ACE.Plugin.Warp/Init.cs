@@ -316,27 +316,26 @@ namespace ACE.Plugin.WarpPlugin
                 // Wait for logout animation
                 await Task.Delay(7000);
 
-                // Step 4: Send handoff data via Broadcast chat message.
-                // The AC client has no handler for custom opcodes — GameMessageServerHandoff
-                // (0xF7CF) is silently dropped. The only reliable way to push structured data
-                // to the client is through channels the client actually processes.
+                // Step 4: Send ServerHandoff message to client.
+                // The DecalPlugin intercepts this custom opcode (0xF7CF), saves target
+                // info to handoff.json, and exits the client. The DecalLauncher then
+                // relaunches the AC client pointing to the new server.
                 //
-                // The DecalPlugin hooks the chat message rendering pipeline, detects the
-                // @@VEILREND_HANDOFF@@ pattern, extracts host/port/token, writes handoff.json,
-                // and exits the client. The DecalLauncher then relaunches to the new server.
-                //
-                // The message is sent as Broadcast (0x00) so it appears in the chat window
-                // where the plugin can intercept it. The player sees it as a system message.
+                // Custom opcodes work because the DecalPlugin registers a handler for
+                // opcode 0xF7CF via Harmony patch on the client's message dispatch.
+                // See: https://gitlab.com/trevis/acserverclientplugindemo
                 var handoffToken = migrationToken ?? resultMetadata.Cookie;
-                string handoffMessage = $"@@VEILREND_HANDOFF@@{config.DestinationServerHost}:{config.DestinationServerPort}:{handoffToken}";
                 
-                log.Info($"[Warp] Sending handoff chat to {player.Name} -> {config.DestinationServerHost}:{config.DestinationServerPort}");
+                log.Info($"[Warp] Sending ServerHandoff to {player.Name} -> {config.DestinationServerHost}:{config.DestinationServerPort}");
                 
                 player.Session.Network.EnqueueSend(
-                    new GameMessageSystemChat(handoffMessage, ChatMessageType.Broadcast));
+                    new GameMessageServerHandoff(
+                        config.DestinationServerHost,
+                        (ushort)config.DestinationServerPort,
+                        handoffToken));
 
                 // Step 5: Boot the session (disconnects the client)
-                // Give the plugin a moment to process the chat message before we kill the session
+                // Give the plugin a moment to process the handoff message before we kill the session
                 await Task.Delay(500);
                 
                 player.Session.Terminate(
